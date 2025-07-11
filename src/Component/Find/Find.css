@@ -1,0 +1,406 @@
+/* Find.css */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+.porsche-find-container {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* First Section - Find Your Porsche Center */
+.porsche-center-section {
+  background: linear-gradient(175deg, #000000 0%, #fffcfc 90%);
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.content-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  width: 100%;
+}
+
+.text-content {
+  color: white;
+  z-index: 2;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 300;
+  margin-bottom: 24px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.section-description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 32px;
+  opacity: 0.9;
+  max-width: 500px;
+}
+
+.search-button {
+  background: linear-gradient(175deg, #7d7c7c 0%, #cccbcb 90%);
+  color: #1a1a1a;
+  border: none;
+  padding: 16px 32px;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+.search-button:hover {
+  background: #f0f0f0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.image-content {
+  position: relative;
+  height: 400px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.porsche-center-image {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.center-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 8px;
+}
+
+/* Second Section - Find your new or pre-owned Porsche */
+.porsche-vehicles-section {
+  background: linear-gradient(0deg, #000000 10%, #ffffff 12%);
+  padding: 80px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.vehicles-content-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.vehicles-text-content {
+  z-index: 2;
+}
+
+.vehicles-section-title {
+  font-size: 2.5rem;
+  font-weight: 300;
+  margin-bottom: 24px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: #1a1a1a;
+}
+
+.vehicles-section-description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 40px;
+  color: #666;
+  max-width: 500px;
+}
+
+.search-container {
+  margin-top: 32px;
+}
+
+.search-input-wrapper {
+  position: relative;
+  max-width: 400px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  z-index: 1;
+}
+
+.location-input {
+  width: 100%;
+  padding: 16px 16px 16px 50px;
+  border: 2px solid #e0e0e0af;
+  border-radius: 4px;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.755);
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.location-input:focus {
+  border-color: #000000;
+  box-shadow: 0 0 0 3px rgba(213, 43, 30, 0.1);
+}
+
+.location-input::placeholder {
+  color: #999;
+}
+
+.vehicles-image-content {
+  position: relative;
+  height: 500px;
+  overflow: hidden;
+}
+
+.porsche-car-image {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.car-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Third Section - Online Shop Highlights */
+.online-shop-section {
+  background: white;
+  padding: 80px 0 40px;
+  text-align: center;
+}
+
+.shop-content-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.shop-section-title {
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: #1a1a1a;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .content-wrapper,
+  .vehicles-content-wrapper {
+    max-width: 1000px;
+    gap: 40px;
+  }
+  
+  .section-title,
+  .vehicles-section-title,
+  .shop-section-title {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 968px) {
+  .content-wrapper,
+  .vehicles-content-wrapper {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 0 20px;
+  }
+  
+  .porsche-center-section {
+    padding: 60px 0;
+  }
+  
+  .porsche-vehicles-section {
+    padding: 60px 0;
+  }
+  
+  .online-shop-section {
+    padding: 60px 0 30px;
+  }
+  
+  .section-title,
+  .vehicles-section-title,
+  .shop-section-title {
+    font-size: 2rem;
+  }
+  
+  .image-content,
+  .vehicles-image-content {
+    height: 300px;
+  }
+  
+  .vehicles-content-wrapper {
+    gap: 30px;
+  }
+  
+  .vehicles-text-content {
+    order: 2;
+  }
+  
+  .vehicles-image-content {
+    order: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .content-wrapper,
+  .vehicles-content-wrapper {
+    padding: 0 16px;
+  }
+  
+  .section-title,
+  .vehicles-section-title,
+  .shop-section-title {
+    font-size: 1.8rem;
+  }
+  
+  .section-description,
+  .vehicles-section-description {
+    font-size: 1rem;
+  }
+  
+  .search-button {
+    padding: 14px 28px;
+    font-size: 0.9rem;
+  }
+  
+  .location-input {
+    padding: 14px 14px 14px 46px;
+    font-size: 0.9rem;
+  }
+  
+  .image-content,
+  .vehicles-image-content {
+    height: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .porsche-center-section {
+    padding: 40px 0;
+  }
+  
+  .porsche-vehicles-section {
+    padding: 40px 0;
+  }
+  
+  .online-shop-section {
+    padding: 40px 0 20px;
+  }
+  
+  .section-title,
+  .vehicles-section-title,
+  .shop-section-title {
+    font-size: 1.6rem;
+  }
+  
+  .section-description,
+  .vehicles-section-description {
+    font-size: 0.95rem;
+    margin-bottom: 24px;
+  }
+  
+  .search-button {
+    padding: 12px 24px;
+    font-size: 0.85rem;
+  }
+  
+  .location-input {
+    padding: 12px 12px 12px 44px;
+    font-size: 0.85rem;
+  }
+  
+  .image-content,
+  .vehicles-image-content {
+    height: 200px;
+  }
+  
+  .content-wrapper,
+  .vehicles-content-wrapper {
+    gap: 24px;
+  }
+}
+
+/* High-resolution displays */
+@media (min-width: 1400px) {
+  .content-wrapper,
+  .vehicles-content-wrapper {
+    max-width: 1600px;
+    gap: 100px;
+  }
+  
+  .section-title,
+  .vehicles-section-title,
+  .shop-section-title {
+    font-size: 3rem;
+  }
+  
+  .section-description,
+  .vehicles-section-description {
+    font-size: 1.2rem;
+  }
+  
+  .image-content {
+    height: 450px;
+  }
+  
+  .vehicles-image-content {
+    height: 550px;
+  }
+}
+
+/* Ultra-wide displays */
+@media (min-width: 1800px) {
+  .content-wrapper,
+  .vehicles-content-wrapper {
+    max-width: 1800px;
+  }
+  
+  .section-title,
+  .vehicles-section-title,
+  .shop-section-title {
+    font-size: 3.5rem;
+  }
+  
+  .image-content {
+    height: 500px;
+  }
+  
+  .vehicles-image-content {
+    height: 600px;
+  }
+}

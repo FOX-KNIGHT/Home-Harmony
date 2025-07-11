@@ -1,0 +1,271 @@
+/* Background Video Section Styles */
+.background-container {
+    position: relative;
+    width: 100%;
+    max-width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.background-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Overlay for better text readability */
+.background-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+
+/* Header Navigation */
+.background-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    padding: 20px 0;
+}
+
+.header-content {
+    display: flex;
+    justify-content:space-between;
+    align-items:end ;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+.menu-button {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.menu-button:hover {
+    color: rgb(255, 255, 255);
+}
+
+.menu-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.porsche-logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.user-icon {
+    width: 24px;
+    height: 24px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.user-icon:hover {
+    color: rgba(187, 89, 14, 0.8);
+}
+
+/* Main Content */
+.background-content {
+    position: absolute;
+    top: 50%;
+    left: 50px;
+    transform: translateY(-50%);
+    z-index: 5;
+    max-width: 600px;
+}
+
+.background-title {
+    font-size: 4.5rem;
+    font-weight: 300;
+    color: white;
+    line-height: 1.1;
+    margin-bottom: 2rem;
+    letter-spacing: -0.02em;
+}
+
+.background-cta {
+    display: inline-block;
+    padding: 15px 30px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.background-cta:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: white;
+    transform: translateY(-2px);
+}
+
+/* Pause Button */
+.pause-button {
+    position: absolute;
+    bottom: 40px;
+    right: 40px;
+    z-index: 10;
+    width: 60px;
+    height: 60px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.pause-button:hover {
+    background: rgba(0, 0, 0, 0.8);
+    border-color: white;
+    transform: scale(1.05);
+}
+
+.pause-icon {
+    width: 20px;
+    height: 20px;
+    color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .background-title {
+        font-size: 3.5rem;
+    }
+
+    .background-content {
+        left: 30px;
+        max-width: 500px;
+    }
+
+    .header-content {
+        padding: 0 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .background-container {
+        height: 80vh;
+    }
+
+    .background-title {
+        font-size: 2.5rem;
+    }
+
+    .background-content {
+        left: 20px;
+        max-width: 400px;
+    }
+
+    .header-content {
+        padding: 0 20px;
+    }
+
+    .porsche-logo {
+        font-size: 20px;
+    }
+
+    .pause-button {
+        width: 50px;
+        height: 50px;
+        bottom: 30px;
+        right: 30px;
+    }
+
+    .pause-icon {
+        width: 16px;
+        height: 16px;
+    }
+
+    .background-cta {
+        padding: 12px 24px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .background-container {
+        height: 70vh;
+    }
+
+    .background-title {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .background-content {
+        left: 15px;
+        max-width: 300px;
+    }
+
+    .header-content {
+        padding: 0 15px;
+    }
+
+    .porsche-logo {
+        font-size: 18px;
+    }
+
+    .menu-button {
+        font-size: 14px;
+    }
+
+    .pause-button {
+        width: 45px;
+        height: 45px;
+        bottom: 20px;
+        right: 20px;
+    }
+
+    .pause-icon {
+        width: 14px;
+        height: 14px;
+    }
+
+    .background-cta {
+        padding: 10px 20px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 320px) {
+    .background-title {
+        font-size: 1.8rem;
+    }
+
+    .background-content {
+        left: 10px;
+        max-width: 280px;
+    }
+
+    .header-content {
+        padding: 0 10px;
+    }
+}
