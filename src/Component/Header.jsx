@@ -491,6 +491,7 @@ const Header = ({ openLogin, openHouseholdChaos }) => {
     openHouseholdChaos();
   }
 };
+              console.log("button clicked");
             </div>
 
             <div className="project-visual">
