@@ -45,6 +45,16 @@ const Header = ({ openLogin, openHouseholdChaos }) => {
       }
     };
 
+    //for login to open first
+    const handleExperienceClick = async () => {
+  // Open login modal, let it resolve when login is successful or cancelled
+  const result = await openLogin();
+  // Only proceed if login is successful or result is truthy (adapt this for your logic)
+  if (result) {
+    openHouseholdChaos();
+  }
+};
+
     // Smooth scrolling for navigation links
     const handleAnchorClick = (e) => {
       e.preventDefault();
@@ -473,10 +483,14 @@ const Header = ({ openLogin, openHouseholdChaos }) => {
                 </ul>
               </div>
 
-              <button onClick={openHouseholdChaos} className="cta-btn secondary solution-btn">
-                <span>Experience HomeHarmony</span>
-                <i className="btn-arrow">↗</i>
-              </button>
+              const handleExperienceClick = async () => {
+  // Open login modal, let it resolve when login is successful or cancelled
+  const result = await openLogin();
+  // Only proceed if login is successful or result is truthy (adapt this for your logic)
+  if (result) {
+    openHouseholdChaos();
+  }
+};
             </div>
 
             <div className="project-visual">
