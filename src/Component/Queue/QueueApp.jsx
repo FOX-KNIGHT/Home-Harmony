@@ -3,6 +3,7 @@ import QueueForm from "./components/QueueForm";
 import QueueList from "./components/QueueList";
 import Notification from "./components/Notification";
 import { predictWaitTime } from "./services/predictor";
+import "./queue.css";
 
 const QueueApp = () => {
   const [queue, setQueue] = useState([]);
