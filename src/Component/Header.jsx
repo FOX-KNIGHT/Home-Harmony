@@ -8,7 +8,7 @@ import Mithileshpic from './Photo/Mithilesh.jpg';
 import Footer from './Footer';
 
 
-const Header = ({ openLogin, openHouseholdChaos }) => {
+const Header = ({ openHouseholdChaos }) => {
   const [statsAnimated, setStatsAnimated] = useState(false);
   const [visibleFeatures, setVisibleFeatures] = useState([]);
   const [showInitialAnimation, setShowInitialAnimation] = useState(true);
@@ -44,16 +44,6 @@ const Header = ({ openLogin, openHouseholdChaos }) => {
         }
       }
     };
-
-    //for login to open first
-    const handleExperienceClick = async () => {
-  // Open login modal, let it resolve when login is successful or cancelled
-  const result = await openLogin();
-  // Only proceed if login is successful or result is truthy (adapt this for your logic)
-  if (result) {
-    openHouseholdChaos();
-  }
-};
 
     // Smooth scrolling for navigation links
     const handleAnchorClick = (e) => {
@@ -240,9 +230,9 @@ const Header = ({ openLogin, openHouseholdChaos }) => {
               <li><a href="#project" className="nav-link">Solution</a></li>
               <li><a href="#features" className="nav-link">Features</a></li>
               <li>
-                <button onClick={openLogin} className="login-btn">
-                  <span className="login-icon">👤</span>
-                  Login
+                <button onClick={openHouseholdChaos} className="experience-btn">
+                  <span className="experience-icon">✨</span>
+                  Experience
                 </button>
               </li>
             </ul>
@@ -482,16 +472,6 @@ const Header = ({ openLogin, openHouseholdChaos }) => {
                   </li>
                 </ul>
               </div>
-
-              const handleExperienceClick = async () => {
-  // Open login modal, let it resolve when login is successful or cancelled
-  const result = await openLogin();
-  // Only proceed if login is successful or result is truthy (adapt this for your logic)
-  if (result) {
-    openHouseholdChaos();
-  }
-};
-              
             </div>
 
             <div className="project-visual">

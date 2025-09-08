@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Login from './Login';
 import './HouseholdChaos.css';
 
 const HouseholdChaos = ({ 
@@ -10,6 +11,8 @@ const HouseholdChaos = ({
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 50);
@@ -37,6 +40,22 @@ const HouseholdChaos = ({
   const handleClose = () => {
     setIsVisible(false);
     setTimeout(onClose, 300);
+  };
+
+  const openLogin = () => setIsLoginOpen(true);
+  const closeLogin = () => setIsLoginOpen(false);
+
+  const handleLoginSuccess = () => {
+    setIsLoggedIn(true);
+    setIsLoginOpen(false);
+  };
+
+  const handleServiceClick = (serviceAction) => {
+    if (!isLoggedIn) {
+      openLogin();
+      return;
+    }
+    serviceAction();
   };
 
   const ServiceCard = ({ 
@@ -99,8 +118,8 @@ const HouseholdChaos = ({
         </div>
         
         {onClick ? (
-          <button onClick={onClick} className={`service-card__button service-card__button--${color}`}>
-            <span>Get Started</span>
+          <button onClick={() => handleServiceClick(onClick)} className={`service-card__button service-card__button--${color}`}>
+            <span>{isLoggedIn ? 'Get Started' : 'Login to Access'}</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M7 17l9.2-9.2M17 17V7H7"/>
             </svg>
@@ -140,6 +159,21 @@ const HouseholdChaos = ({
         </svg>
       </button>
 
+      {/* Login Modal */}
+      {isLoginOpen && (
+        <div className="login-overlay" onClick={closeLogin}>
+          <div className="login-container" onClick={(e) => e.stopPropagation()}>
+            <button className="login-close-button" onClick={closeLogin}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+            <Login onLoginSuccess={handleLoginSuccess} />
+          </div>
+        </div>
+      )}
+
       {/* Navigation Dots */}
       <nav className="floating-nav">
         <NavigationDot targetId="hero" isActive={activeSection === 'hero'} />
@@ -171,23 +205,39 @@ const HouseholdChaos = ({
               </div>
             </div>
             
-            <ul className="nav__links">
-              {[
-                { href: "#hero", label: "Home" },
-                { href: "#about", label: "About" },
-                { href: "#services", label: "Services" },
-                { href: "#contact", label: "Contact" }
-              ].map(link => (
-                <li key={link.href}>
-                  <a 
-                    href={link.href} 
-                    className={`nav__link ${activeSection === link.href.slice(1) ? 'nav__link--active' : ''}`}
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <div className="nav__content">
+              <ul className="nav__links">
+                {[
+                  { href: "#hero", label: "Home" },
+                  { href: "#about", label: "About" },
+                  { href: "#services", label: "Services" },
+                  { href: "#contact", label: "Contact" }
+                ].map(link => (
+                  <li key={link.href}>
+                    <a 
+                      href={link.href} 
+                      className={`nav__link ${activeSection === link.href.slice(1) ? 'nav__link--active' : ''}`}
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              
+              <div className="nav__auth">
+                {isLoggedIn ? (
+                  <div className="user-status">
+                    <span className="status-icon">✓</span>
+                    <span className="status-text">Logged In</span>
+                  </div>
+                ) : (
+                  <button onClick={openLogin} className="nav-login-btn">
+                    <span className="login-icon">👤</span>
+                    Login
+                  </button>
+                )}
+              </div>
+            </div>
           </nav>
         </header>
 

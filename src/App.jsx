@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './Component/Header.jsx';
-import Login from './Component/Login.jsx';
 import Wastemanage from './Component/wastemanage.jsx';
 import HouseholdChaos from './Component/HouseholdChaos.jsx';
 import Queue from './Component/Queue/QueueApp.jsx';
@@ -13,15 +12,11 @@ import './App.css';
 const clientId = '833368854512-s1er4vbhs3rromaj8j1mpvcdf5us549l.apps.googleusercontent.com';
 
 function App() {
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isHouseholdChaosOpen, setIsHouseholdChaosOpen] = useState(false);
   const [isWasteManagementOpen, setIsWasteManagementOpen] = useState(false);
   const [isQueueOpen, setIsQueueOpen] = useState(false);
   const [isFamilyAppOpen, setIsFamilyAppOpen] = useState(false);
   const [isComingSoonOpen, setIsComingSoonOpen] = useState(false);
-
-  const openLogin = () => setIsLoginOpen(true);
-  const closeLogin = () => setIsLoginOpen(false);
 
   const openHouseholdChaos = () => {
     setIsHouseholdChaosOpen(true);
@@ -95,21 +90,8 @@ function App() {
           {!isHouseholdChaosOpen && !isWasteManagementOpen && !isQueueOpen && !isFamilyAppOpen && !isComingSoonOpen && (
             <div className="main-content">
               <Header
-                openLogin={openLogin}
                 openHouseholdChaos={openHouseholdChaos}
               />
-
-              {/* Login Modal */}
-              {isLoginOpen && (
-                <div className="login-overlay" onClick={closeLogin}>
-                  <div className="login-container" onClick={(e) => e.stopPropagation()}>
-                    <button className="close-button" onClick={closeLogin}>
-                      Close
-                    </button>
-                    <Login />
-                  </div>
-                </div>
-              )}
 
               <Routes>
                 <Route path="/" element={<div />} />
