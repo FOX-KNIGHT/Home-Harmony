@@ -472,6 +472,10 @@ const Header = ({ openHouseholdChaos }) => {
                   </li>
                 </ul>
               </div>
+              <button onClick={openHouseholdChaos} className="experience-btn1" style={{ marginTop: '20px', padding: '30px 40px', fontSize: '25px' }}>
+                  <span className="experience-icon">✨</span>
+                  Experience Home Harmony
+                </button>
             </div>
 
             <div className="project-visual">
