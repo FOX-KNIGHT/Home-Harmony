@@ -14,7 +14,8 @@ const clientId = '833368854512-s1er4vbhs3rromaj8j1mpvcdf5us549l.apps.googleuserc
 
 function App() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [isHouseholdChaosOpen, setIsHouseholdChaosOpen] = useState(false);
+  const [isHouseholdChaosOpen, setIsHouseholdChaosOpen] = useState(true); // Changed to true
+  const [isHeaderOpen, setIsHeaderOpen] = useState(false); // New state for Header
   const [isWasteManagementOpen, setIsWasteManagementOpen] = useState(false);
   const [isQueueOpen, setIsQueueOpen] = useState(false);
   const [isFamilyAppOpen, setIsFamilyAppOpen] = useState(false);
@@ -25,11 +26,28 @@ function App() {
 
   const openHouseholdChaos = () => {
     setIsHouseholdChaosOpen(true);
+    setIsHeaderOpen(false);
     document.body.style.overflow = 'hidden';
   };
 
   const closeHouseholdChaos = () => {
     setIsHouseholdChaosOpen(false);
+    document.body.style.overflow = 'unset';
+  };
+
+  // New function to open Team page (Header)
+  const openTeamPage = () => {
+    setIsHouseholdChaosOpen(false);
+    setIsWasteManagementOpen(false);
+    setIsQueueOpen(false);
+    setIsFamilyAppOpen(false);
+    setIsComingSoonOpen(false);
+    setIsHeaderOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeTeamPage = () => {
+    setIsHeaderOpen(false);
     document.body.style.overflow = 'unset';
   };
 
@@ -39,6 +57,7 @@ function App() {
     setIsQueueOpen(false);
     setIsFamilyAppOpen(false);
     setIsComingSoonOpen(false);
+    setIsHeaderOpen(false);
     setIsHouseholdChaosOpen(true);
     document.body.style.overflow = 'hidden';
   };
@@ -91,29 +110,15 @@ function App() {
     <GoogleOAuthProvider clientId={clientId}>
       <Router>
         <div className="App">
-          {/* Main Content - Hidden when full-screen modals are open */}
-          {!isHouseholdChaosOpen && !isWasteManagementOpen && !isQueueOpen && !isFamilyAppOpen && !isComingSoonOpen && (
-            <div className="main-content">
-              <Header
-                openLogin={openLogin}
-                openHouseholdChaos={openHouseholdChaos}
-              />
-
-              {/* Login Modal */}
-              {isLoginOpen && (
-                <div className="login-overlay" onClick={closeLogin}>
-                  <div className="login-container" onClick={(e) => e.stopPropagation()}>
-                    <button className="close-button" onClick={closeLogin}>
-                      Close
-                    </button>
-                    <Login />
-                  </div>
-                </div>
-              )}
-
-              <Routes>
-                <Route path="/" element={<div />} />
-              </Routes>
+          {/* Login Modal */}
+          {isLoginOpen && (
+            <div className="login-overlay" onClick={closeLogin}>
+              <div className="login-container" onClick={(e) => e.stopPropagation()}>
+                <button className="close-button" onClick={closeLogin}>
+                  Close
+                </button>
+                <Login />
+              </div>
             </div>
           )}
 
@@ -126,7 +131,37 @@ function App() {
                 onOpenQueue={openQueue}
                 onOpenFamilyApp={openFamilyApp}
                 onOpenComingSoon={openComingSoon}
+                onOpenTeamPage={openTeamPage}
               />
+            </div>
+          )}
+
+          {/* Full Screen Team Page (Header) */}
+          {isHeaderOpen && (
+            <div className="fullscreen-modal team-page-modal">
+              <button
+                className="fullscreen-back-btn team-back-btn"
+                onClick={backToHouseholdChaos}
+                title="Back to Home Harmony"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M19 12H6m0 0l6 6m-6-6l6-6"/>
+                </svg>
+                <span>Back to Home</span>
+              </button>
+              <button
+                className="fullscreen-close-btn team-close-btn"
+                onClick={closeTeamPage}
+                title="Close"
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+              <div className="team-page-container">
+                <Header openHouseholdChaos={openHouseholdChaos} />
+              </div>
             </div>
           )}
 

@@ -1,505 +1,423 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Header.css';
 import asmitpic from './Photo/Asmit.jpg';
-import Muskanpic from './Photo/Muskan.jpg';
 import Siddhantpic from './Photo/Sidd.png';
-import Shlokpic from './Photo/Shlok.jpg';
-import Mithileshpic from './Photo/Mithilesh.jpg';
-import Footer from './Footer';
-
 
 const Header = ({ openHouseholdChaos }) => {
-  const [statsAnimated, setStatsAnimated] = useState(false);
-  const [visibleFeatures, setVisibleFeatures] = useState([]);
-  const [showInitialAnimation, setShowInitialAnimation] = useState(true);
-  const [scrollDirection, setScrollDirection] = useState('up');
-  const [lastScrollY, setLastScrollY] = useState(0);
-  const navRef = useRef(null);
-  const statsRef = useRef(null);
-  const projectRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [activeSection, setActiveSection] = useState('hero');
 
   useEffect(() => {
-    // Initial loading animation
-    const timer = setTimeout(() => {
-      setShowInitialAnimation(false);
-    }, 4000);
+    const timer = setTimeout(() => setIsVisible(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
 
-    // Navbar scroll behavior
+  useEffect(() => {
+    const container = document.querySelector('.header-page');
+    if (!container) return;
+
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
+      const sections = ['hero', 'team', 'mission', 'values'];
+      const scrollPosition = container.scrollTop + 200;
 
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setScrollDirection('down');
-      } else {
-        setScrollDirection('up');
-      }
-
-      setLastScrollY(currentScrollY);
-
-      if (navRef.current) {
-        if (currentScrollY > 100) {
-          navRef.current.classList.add('scrolled');
-        } else {
-          navRef.current.classList.remove('scrolled');
+      for (const sectionId of sections.reverse()) {
+        const element = container.querySelector(`#${sectionId}`);
+        if (element && element.offsetTop <= scrollPosition) {
+          setActiveSection(sectionId);
+          break;
         }
       }
     };
 
-    // Smooth scrolling for navigation links
-    const handleAnchorClick = (e) => {
-      e.preventDefault();
-      const target = document.querySelector(e.target.getAttribute('href'));
-      if (target) {
-        target.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        });
-      }
-    };
+    container.addEventListener('scroll', handleScroll);
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, []);
 
-    const anchorLinks = document.querySelectorAll('a[href^="#"]');
-    anchorLinks.forEach(anchor => {
-      anchor.addEventListener('click', handleAnchorClick);
-    });
-
-    window.addEventListener('scroll', handleScroll);
-
-    // Enhanced fade in animation on scroll
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-        }
+  const scrollToSection = (id) => {
+    const container = document.querySelector('.header-page');
+    const element = container?.querySelector(`#${id}`);
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
       });
-    }, observerOptions);
-
-    const fadeInSections = document.querySelectorAll('.fade-in-section');
-    fadeInSections.forEach(el => observer.observe(el));
-
-    // Stats animation
-    const statsObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting && !statsAnimated) {
-          animateStats();
-          setStatsAnimated(true);
-        }
-      });
-    });
-
-    if (statsRef.current) {
-      statsObserver.observe(statsRef.current);
-    }
-
-    // Project features animation observer
-    const projectObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          animateFeatures();
-        }
-      });
-    }, { threshold: 0.3 });
-
-    if (projectRef.current) {
-      projectObserver.observe(projectRef.current);
-    }
-
-    // Enhanced particle effect with variety
-    const createParticle = () => {
-      const particle = document.createElement('div');
-      particle.className = 'particle';
-
-      const shapes = ['circle', 'square', 'triangle'];
-      const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7'];
-      const randomColor = colors[Math.floor(Math.random() * colors.length)];
-      const randomShape = shapes[Math.floor(Math.random() * shapes.length)];
-
-      particle.classList.add(`particle-${randomShape}`);
-      particle.style.background = randomColor;
-      particle.style.left = Math.random() * 100 + 'vw';
-      particle.style.animationDuration = (Math.random() * 4 + 3) + 's';
-      particle.style.animationDelay = Math.random() * 2 + 's';
-
-      document.body.appendChild(particle);
-
-      setTimeout(() => {
-        if (particle.parentNode) {
-          particle.remove();
-        }
-      }, 7000);
-    };
-
-    const particleInterval = setInterval(createParticle, 800);
-
-    // Cleanup
-    return () => {
-      clearTimeout(timer);
-      anchorLinks.forEach(anchor => {
-        anchor.removeEventListener('click', handleAnchorClick);
-      });
-      window.removeEventListener('scroll', handleScroll);
-      observer.disconnect();
-      statsObserver.disconnect();
-      projectObserver.disconnect();
-      clearInterval(particleInterval);
-    };
-  }, [statsAnimated, lastScrollY]);
-
-  const animateStats = () => {
-    const statNumbers = document.querySelectorAll('.stat-number');
-    statNumbers.forEach((stat, index) => {
-      const finalNumber = parseInt(stat.textContent);
-      let current = 0;
-
-      const increment = () => {
-        if (current < finalNumber) {
-          current += Math.ceil(finalNumber / 60);
-          if (current > finalNumber) current = finalNumber;
-          stat.textContent = current + (stat.textContent.includes('+') ? '+' : '');
-          requestAnimationFrame(increment);
-        }
-      };
-
-      setTimeout(() => requestAnimationFrame(increment), index * 300);
-    });
-  };
-
-  const animateFeatures = () => {
-    const features = document.querySelectorAll('.project-features li');
-    features.forEach((feature, index) => {
-      setTimeout(() => {
-        feature.classList.add('animate-in');
-      }, index * 150);
-    });
-  };
-
-  const handleTeamMemberHover = (e, isEntering) => {
-    const member = e.currentTarget;
-    if (isEntering) {
-      member.classList.add('hovered');
-    } else {
-      member.classList.remove('hovered');
     }
   };
 
-  const handleLeaderClick = (e) => {
-    e.currentTarget.classList.add('pulse-animation');
-    setTimeout(() => {
-      e.currentTarget.classList.remove('pulse-animation');
-    }, 600);
-  };
-
-  const handleFeatureHover = (index) => {
-    const feature = document.querySelector(`.feature-item:nth-child(${index + 1})`);
-    if (feature) {
-      feature.classList.add('feature-glow');
-      setTimeout(() => {
-        feature.classList.remove('feature-glow');
-      }, 300);
+  const teamMembers = [
+    {
+      name: "Siddhant Satyajeet Jena",
+      role: "Team Leader & Visionary",
+      image: Siddhantpic,
+      skills: ["Leadership", "Strategy", "Innovation", "UI/UX Design"],
+      description: "Leading the charge in sustainable innovation with a vision to transform how families manage their homes. Passionate about creating technology that makes a real difference.",
+      linkedin: "#",
+      github: "#",
+      email: "siddhant@homeharmony.eco",
+      isLeader: true
+    },
+    {
+      name: "Asmit Gupta",
+      role: "Technical Lead & Developer",
+      image: asmitpic,
+      skills: ["React", "Full-Stack", "Design Systems", "Architecture"],
+      description: "Crafting elegant solutions through code and design. Specializes in building scalable applications that prioritize user experience and performance.",
+      linkedin: "#",
+      github: "#",
+      email: "asmit@homeharmony.eco",
+      isLeader: false
     }
-  };
+  ];
 
   return (
-    <div className="app-container">
-      {/* Initial Loading Animation */}
-      {showInitialAnimation && (
-        <div className="loading-overlay">
-          <div className="loading-content">
-            <h1 className="loading-title">HomeHarmony</h1>
-            <div className="loading-subtitle">Transforming Chaos into Harmony</div>
-            <div className="loading-spinner"></div>
-          </div>
-        </div>
-      )}
-
+    <div className={`header-page ${isVisible ? 'header-page--visible' : ''}`}>
       {/* Navigation */}
-      <nav className={`navbar ${scrollDirection === 'down' ? 'navbar-hidden' : ''}`} ref={navRef}>
-        <div className="container">
-          <div className="nav-content">
-            <div className="logo">
-              <span className="logo-icon">🏠</span>
-              <span className="logo-text">HomeHarmony</span>
+      <nav className="header-nav">
+        <div className="header-nav__container">
+          <div className="header-nav__logo">
+            <span className="header-nav__logo-icon">👥</span>
+            <div className="header-nav__logo-text">
+              <span className="logo-primary">Team</span>
+              <span className="logo-secondary">HomeHarmony</span>
             </div>
-            <ul className="nav-links">
-              <li><a href="#home" className="nav-link">Home</a></li>
-              <li><a href="#team" className="nav-link">Team</a></li>
-              <li><a href="#project" className="nav-link">Solution</a></li>
-              <li><a href="#features" className="nav-link">Features</a></li>
-              <li>
-                <button onClick={openHouseholdChaos} className="experience-btn">
-                  <span className="experience-icon">✨</span>
-                  Experience
-                </button>
-              </li>
-            </ul>
           </div>
+          
+          <ul className="header-nav__links">
+            <li>
+              <button 
+                onClick={() => scrollToSection('hero')}
+                className={`header-nav__link ${activeSection === 'hero' ? 'header-nav__link--active' : ''}`}
+              >
+                Overview
+              </button>
+            </li>
+            <li>
+              <button 
+                onClick={() => scrollToSection('team')}
+                className={`header-nav__link ${activeSection === 'team' ? 'header-nav__link--active' : ''}`}
+              >
+                Team
+              </button>
+            </li>
+            <li>
+              <button 
+                onClick={() => scrollToSection('mission')}
+                className={`header-nav__link ${activeSection === 'mission' ? 'header-nav__link--active' : ''}`}
+              >
+                Mission
+              </button>
+            </li>
+            <li>
+              <button 
+                onClick={() => scrollToSection('values')}
+                className={`header-nav__link ${activeSection === 'values' ? 'header-nav__link--active' : ''}`}
+              >
+                Values
+              </button>
+            </li>
+            <li>
+              <button onClick={openHouseholdChaos} className="header-nav__cta">
+                <span>Services</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </button>
+            </li>
+          </ul>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="hero" id="home">
-        <div className="hero-background">
-          <div className="hero-particles"></div>
+      <section className="header-hero" id="hero">
+        <div className="header-hero__background">
           <div className="hero-gradient"></div>
-          <div className="floating-shapes">
-            <div className="shape shape-1"></div>
-            <div className="shape shape-2"></div>
-            <div className="shape shape-3"></div>
-            <div className="shape shape-4"></div>
-          </div>
+          <div className="hero-pattern"></div>
         </div>
-        <div className="container">
-          <div className="hero-content">
-            <div className="innovation-badge">
-              <span className="badge-icon">✨</span>
-              <span>Innovation Challenge 2025</span>
+        
+        <div className="header-hero__content">
+          <div className="hero-badge">
+            <span className="badge-shine"></span>
+            <span className="badge-icon">✨</span>
+            <span className="badge-text">Innovation Challenge 2025</span>
+          </div>
+          
+          <h1 className="hero-title">
+            <span className="hero-title__line">The Architects of</span>
+            <span className="hero-title__highlight">HomeHarmony</span>
+          </h1>
+          
+          <p className="hero-description">
+            Two visionaries united by a singular mission: to revolutionize sustainable living 
+            through intelligent technology. We're not just building software—we're crafting 
+            the future of eco-conscious home management.
+          </p>
+          
+          <div className="hero-stats">
+            <div className="hero-stat">
+              <div className="hero-stat__number">2</div>
+              <div className="hero-stat__label">Core Members</div>
+              <div className="hero-stat__line"></div>
             </div>
-            <h1 className="hero-title">
-              <span className="title-main">Transform Your Home</span>
-              <span className="title-highlight">From Chaos to Harmony</span>
-            </h1>
-            <div className="hero-subtitle">Smart Solutions for Modern Households</div>
-            <p className="hero-description">
-              Meet the innovative team revolutionizing household management through intelligent
-              technology. Five passionate developers creating seamless solutions for busy families
-              to organize, manage, and optimize their daily routines.
-            </p>
-            <a href="#team" className="cta-btn primary">
-              <span>Discover Our Vision</span>
-              <i className="btn-arrow">→</i>
-            </a>
+            <div className="hero-stat">
+              <div className="hero-stat__number">1</div>
+              <div className="hero-stat__label">Shared Vision</div>
+              <div className="hero-stat__line"></div>
+            </div>
+            <div className="hero-stat">
+              <div className="hero-stat__number">∞</div>
+              <div className="hero-stat__label">Possibilities</div>
+              <div className="hero-stat__line"></div>
+            </div>
+          </div>
+          
+          <div className="hero-actions">
+            <button onClick={() => scrollToSection('team')} className="hero-btn hero-btn--primary">
+              <span>Meet Our Team</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M7 13l5 5 5-5M7 6l5 5 5-5"/>
+              </svg>
+            </button>
+            <button onClick={openHouseholdChaos} className="hero-btn hero-btn--secondary">
+              <span>Explore Services</span>
+            </button>
           </div>
         </div>
       </section>
 
       {/* Team Section */}
-      <section className="team fade-in-section" id="team">
-        <div className="container">
+      <section className="header-team" id="team">
+        <div className="header-team__container">
           <div className="section-header">
-            <h2 className="section-title">
-              <span className="section-icon">🌟</span>
-              Team HomeHarmony
-            </h2>
-            <p className="section-subtitle">Five innovative minds, one harmonious vision</p>
+            <div className="section-badge">Our Team</div>
+            <h2 className="section-title">Meet the Innovators</h2>
+            <p className="section-subtitle">
+              Driven by passion, united by purpose, committed to excellence
+            </p>
           </div>
-
+          
           <div className="team-grid">
-            {/* Team Members */}
-            <div
-              className="team-member"
-              onMouseEnter={(e) => handleTeamMemberHover(e, true)}
-              onMouseLeave={(e) => handleTeamMemberHover(e, false)}
-            >
-              <div className="member-photo">
-                <img
-                  src={asmitpic}
-                  alt="Asmit Gupta"
-                  className="member-avatar"
-                />
-                <div className="photo-glow"></div>
-              </div>
-              <div className="member-info">
-                <div className="member-name">Asmit Gupta</div>
-                <div className="member-role">Frontend Developer & Designer</div>
-                <div className="member-skills">
-                  <span className="skill-tag">React</span>
-                  <span className="skill-tag">Design Systems</span>
-                  <span className="skill-tag">JavaScript</span>
+            {teamMembers.map((member, index) => (
+              <div 
+                key={index} 
+                className={`team-card ${member.isLeader ? 'team-card--leader' : ''}`}
+              >
+                {member.isLeader && (
+                  <div className="team-card__badge">
+                    <span className="badge-shine"></span>
+                    <span>Team Leader</span>
+                  </div>
+                )}
+                
+                <div className="team-card__image-section">
+                  <div className="team-card__image-wrapper">
+                    <div className="image-glow"></div>
+                    <img 
+                      src={member.image} 
+                      alt={member.name} 
+                      className="team-card__image"
+                    />
+                    <div className="image-overlay">
+                      <div className="social-links">
+                        <a href={member.linkedin} className="social-link" aria-label="LinkedIn">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                          </svg>
+                        </a>
+                        <a href={member.github} className="social-link" aria-label="GitHub">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                          </svg>
+                        </a>
+                        <a href={`mailto:${member.email}`} className="social-link" aria-label="Email">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                          </svg>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="team-card__content">
+                  <h3 className="team-card__name">{member.name}</h3>
+                  <p className="team-card__role">{member.role}</p>
+                  <p className="team-card__description">{member.description}</p>
+                  
+                  <div className="team-card__divider"></div>
+                  
+                  <div className="team-card__skills">
+                    <span className="skills-label">Expertise</span>
+                    <div className="skills-list">
+                      {member.skills.map((skill, idx) => (
+                        <span key={idx} className="skill-badge">{skill}</span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-            {/* Team Leader */}
-            <div
-              className="team-member leader"
-              onMouseEnter={(e) => handleTeamMemberHover(e, true)}
-              onMouseLeave={(e) => handleTeamMemberHover(e, false)}
-              onClick={handleLeaderClick}
-            >
-              <div className="member-photo">
-                <img
-                  src={Siddhantpic}
-                  alt="Siddhant Satyajeet Jena"
-                  className="member-avatar"
-                />
-                <div className="photo-glow"></div>
+      {/* Mission Section */}
+      <section className="header-mission" id="mission">
+        <div className="header-mission__container">
+          <div className="section-header">
+            <div className="section-badge">Our Mission</div>
+            <h2 className="section-title">Driven by Purpose</h2>
+            <p className="section-subtitle">
+              Building tomorrow's sustainable living solutions today
+            </p>
+          </div>
+          
+          <div className="mission-content">
+            <div className="mission-card mission-card--primary">
+              <div className="mission-card__icon-wrapper">
+                <div className="mission-card__icon">🎯</div>
               </div>
-              <div className="member-info">
-                <div className="member-name">Siddhant Satyajeet Jena</div>
-                <div className="member-role">Team Leader & Project Architect</div>
-                <div className="member-skills">
-                  <span className="skill-tag">Leadership</span>
-                  <span className="skill-tag">Strategy</span>
-                  <span className="skill-tag">UI/UX Design</span>
-                </div>
-              </div>
+              <h3 className="mission-card__title">Vision</h3>
+              <p className="mission-card__description">
+                To create a world where every household effortlessly manages resources, 
+                reduces waste, and contributes to a sustainable future through intelligent, 
+                user-friendly technology.
+              </p>
             </div>
-
-            <div
-              className="team-member"
-              onMouseEnter={(e) => handleTeamMemberHover(e, true)}
-              onMouseLeave={(e) => handleTeamMemberHover(e, false)}
-            >
-              <div className="member-photo">
-                <img
-                  src={Shlokpic}
-                  alt="Shlok"
-                  className="member-avatar"
-                />
-                <div className="photo-glow"></div>
+            
+            <div className="mission-card mission-card--secondary">
+              <div className="mission-card__icon-wrapper">
+                <div className="mission-card__icon">💡</div>
               </div>
-              <div className="member-info">
-                <div className="member-name">Shlok Katiyar</div>
-                <div className="member-role">Backend Developer & Systems</div>
-                <div className="member-skills">
-                  <span className="skill-tag">Node.js</span>
-                  <span className="skill-tag">Database</span>
-                  <span className="skill-tag">API Design</span>
-                </div>
-              </div>
+              <h3 className="mission-card__title">Approach</h3>
+              <p className="mission-card__description">
+                We blend cutting-edge AI, intuitive design, and sustainable practices to 
+                develop solutions that adapt to users' needs while minimizing environmental 
+                impact at every step.
+              </p>
             </div>
-
-            <div
-              className="team-member"
-              onMouseEnter={(e) => handleTeamMemberHover(e, true)}
-              onMouseLeave={(e) => handleTeamMemberHover(e, false)}
-            >
-              <div className="member-photo">
-                <img
-                  src={Muskanpic}
-                  alt="Muskan"
-                  className="member-avatar"
-                />
-                <div className="photo-glow"></div>
+            
+            <div className="mission-card mission-card--accent">
+              <div className="mission-card__icon-wrapper">
+                <div className="mission-card__icon">🚀</div>
               </div>
-              <div className="member-info">
-                <div className="member-name">Muskan Gupta</div>
-                <div className="member-role">Data Scientist & Analytics</div>
-                <div className="member-skills">
-                  <span className="skill-tag">Python</span>
-                  <span className="skill-tag">ML/AI</span>
-                  <span className="skill-tag">Analytics</span>
-                </div>
-              </div>
-            </div>
-
-            <div
-              className="team-member"
-              onMouseEnter={(e) => handleTeamMemberHover(e, true)}
-              onMouseLeave={(e) => handleTeamMemberHover(e, false)}
-            >
-              <div className="member-photo">
-                <img
-                  src={Mithileshpic}
-                  alt="Mithilesh"
-                  className="member-avatar"
-                />
-                <div className="photo-glow"></div>
-              </div>
-              <div className="member-info">
-                <div className="member-name">Mithilesh Das</div>
-                <div className="member-role">DevOps & Quality Engineer</div>
-                <div className="member-skills">
-                  <span className="skill-tag">DevOps</span>
-                  <span className="skill-tag">Cloud</span>
-                  <span className="skill-tag">Testing</span>
-                </div>
-              </div>
+              <h3 className="mission-card__title">Impact</h3>
+              <p className="mission-card__description">
+                Every feature we build, every line of code we write, is designed to create 
+                measurable positive change—for families, communities, and our planet.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Enhanced Project Section */}
-      <section className="project fade-in-section" id="project" ref={projectRef}>
-        <div className="container">
-          <div className="project-content">
-            <div className="project-info">
-              <div className="mission-header">
-                <span className="mission-icon">🎯</span>
-                <h2 className="project-title">
-                  Our <span className="highlight">Mission</span>
-                </h2>
-                <div className="mission-underline"></div>
-              </div>
-
-              <p className="project-description">
-                <span className="typing-text">Revolutionizing household management through intelligent automation
-                  and seamless organization systems that adapt to your family's unique rhythm and lifestyle.</span>
+      {/* Values Section */}
+      <section className="header-values" id="values">
+        <div className="header-values__container">
+          <div className="section-header">
+            <div className="section-badge">Core Values</div>
+            <h2 className="section-title">What Drives Us</h2>
+          </div>
+          
+          <div className="values-grid">
+            <div className="value-card">
+              <div className="value-card__number">01</div>
+              <h3 className="value-card__title">Innovation First</h3>
+              <p className="value-card__description">
+                We push boundaries, challenge conventions, and constantly seek better ways 
+                to solve complex problems.
               </p>
+            </div>
+            
+            <div className="value-card">
+              <div className="value-card__number">02</div>
+              <h3 className="value-card__title">User-Centric</h3>
+              <p className="value-card__description">
+                Every decision starts with the user. We create experiences that are intuitive, 
+                accessible, and genuinely helpful.
+              </p>
+            </div>
+            
+            <div className="value-card">
+              <div className="value-card__number">03</div>
+              <h3 className="value-card__title">Sustainability</h3>
+              <p className="value-card__description">
+                Environmental responsibility isn't an afterthought—it's woven into the fabric 
+                of everything we build.
+              </p>
+            </div>
+            
+            <div className="value-card">
+              <div className="value-card__number">04</div>
+              <h3 className="value-card__title">Excellence</h3>
+              <p className="value-card__description">
+                We set high standards and hold ourselves accountable. Good enough never is—we 
+                strive for exceptional.
+              </p>
+            </div>
+          </div>
+          
+          <div className="values-cta">
+            <div className="values-cta__content">
+              <h3 className="values-cta__title">Ready to Experience Our Work?</h3>
+              <p className="values-cta__description">
+                Explore our innovative services and discover how we're transforming sustainable living.
+              </p>
+              <button onClick={openHouseholdChaos} className="values-cta__button">
+                <span>Discover Our Services</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
 
-              <div className="features-container" id="features">
-                <h3 className="features-title">Core Features</h3>
-                <ul className="project-features">
-                  <li className="feature-item" onMouseEnter={() => handleFeatureHover(0)}>
-                    <span className="feature-icon">🤖</span>
-                    <div className="feature-content">
-                      <strong>Smart Task Automation</strong>
-                      <span>AI-powered scheduling and routine optimization</span>
-                    </div>
-                  </li>
-                  <li className="feature-item" onMouseEnter={() => handleFeatureHover(1)}>
-                    <span className="feature-icon">👨‍👩‍👧‍👦</span>
-                    <div className="feature-content">
-                      <strong>Family Coordination Hub</strong>
-                      <span>Centralized communication and activity planning</span>
-                    </div>
-                  </li>
-                  <li className="feature-item" onMouseEnter={() => handleFeatureHover(2)}>
-                    <span className="feature-icon">📊</span>
-                    <div className="feature-content">
-                      <strong>Household Analytics</strong>
-                      <span>Track patterns and optimize home efficiency</span>
-                    </div>
-                  </li>
-                  <li className="feature-item" onMouseEnter={() => handleFeatureHover(3)}>
-                    <span className="feature-icon">🏆</span>
-                    <div className="feature-content">
-                      <strong>Achievement System</strong>
-                      <span>Gamified chores and family challenges</span>
-                    </div>
-                  </li>
-                  <li className="feature-item" onMouseEnter={() => handleFeatureHover(4)}>
-                    <span className="feature-icon">🔔</span>
-                    <div className="feature-content">
-                      <strong>Smart Notifications</strong>
-                      <span>Contextual reminders and alerts</span>
-                    </div>
-                  </li>
+      {/* Footer */}
+      <footer className="header-footer">
+        <div className="header-footer__container">
+          <div className="footer-content">
+            <div className="footer-brand">
+              <div className="footer-logo">
+                <span className="footer-logo__icon">🏡</span>
+                <div className="footer-logo__text">
+                  <span className="logo-primary">Home</span>
+                  <span className="logo-secondary">Harmony</span>
+                </div>
+              </div>
+              <p className="footer-tagline">
+                Empowering sustainable living through intelligent innovation.
+              </p>
+            </div>
+            
+            <div className="footer-links">
+              <div className="footer-section">
+                <h4 className="footer-section__title">Team</h4>
+                <ul className="footer-section__list">
+                  <li><button onClick={() => scrollToSection('team')}>Meet the Team</button></li>
+                  <li><button onClick={() => scrollToSection('mission')}>Our Mission</button></li>
+                  <li><button onClick={() => scrollToSection('values')}>Core Values</button></li>
                 </ul>
               </div>
-              <button onClick={openHouseholdChaos} className="experience-btn1" style={{ marginTop: '20px', padding: '30px 40px', fontSize: '25px' }}>
-                  <span className="experience-icon">✨</span>
-                  Experience Home Harmony
-                </button>
-            </div>
-
-            <div className="project-visual">
-              <div className="home-visual">
-                <span className="main-icon">🏡</span>
-                <div className="floating-elements">
-                  <div className="floating-element element-1">📱</div>
-                  <div className="floating-element element-2">⚡</div>
-                  <div className="floating-element element-3">🔧</div>
-                  <div className="floating-element element-4">💡</div>
-                  <div className="floating-element element-5">🎯</div>
-                  <div className="floating-element element-6">✨</div>
-                </div>
-                <div className="visual-glow"></div>
-                <div className="pulse-ring"></div>
-                <div className="pulse-ring pulse-ring-delay"></div>
+              
+              <div className="footer-section">
+                <h4 className="footer-section__title">Connect</h4>
+                <ul className="footer-section__list">
+                  <li><button onClick={openHouseholdChaos}>Services</button></li>
+                  <li><button onClick={openHouseholdChaos}>Contact</button></li>
+                </ul>
               </div>
             </div>
           </div>
+          
+          <div className="footer-bottom">
+            <p className="footer-copyright">© 2025 HomeHarmony. All rights reserved.</p>
+            <p className="footer-credit">Crafted with passion by Team HomeHarmony</p>
+          </div>
         </div>
-      </section>
-      <Footer />
+      </footer>
     </div>
-      
   );
 };
 
