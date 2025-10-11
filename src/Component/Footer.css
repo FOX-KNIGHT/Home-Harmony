@@ -1,8 +1,10 @@
+/* fox-knight/home-harmony/Home-Harmony-c4643bb817836b4fbe232e170dd03dcb908455f9/src/Component/Footer.css */
+
 /* Footer Styles - Aligned with Header Design */
 
 .footer {
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 30%, #2d2d2d 70%, #1a1a1a 100%);
-  color: var(--text-primary);
+  background: var(--classy-dark);
+  color: var(--classy-white);
   position: relative;
   margin-top: 8rem;
   overflow: hidden;
@@ -27,9 +29,9 @@
   width: 100%;
   height: 100%;
   background: 
-    radial-gradient(circle at 20% 80%, rgba(255, 107, 107, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(78, 205, 196, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(69, 183, 209, 0.06) 0%, transparent 50%);
+    radial-gradient(circle at 20% 80%, rgba(226, 192, 68, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(226, 192, 68, 0.06) 0%, transparent 50%);
   pointer-events: none;
   z-index: 1;
 }
@@ -60,11 +62,11 @@
   -webkit-text-fill-color: transparent;
   margin-bottom: 1rem;
   animation: logo-glow 4s ease-in-out infinite alternate;
-  text-shadow: 0 0 30px rgba(255, 107, 107, 0.3);
+  text-shadow: 0 0 30px rgba(226, 192, 68, 0.3);
 }
 
 .footer-brand p {
-  color: var(--text-secondary);
+  color: var(--classy-muted);
   font-size: 1.2rem;
   font-weight: 400;
   line-height: 1.6;
@@ -79,7 +81,7 @@
 }
 
 .footer-links a {
-  color: var(--text-primary);
+  color: var(--classy-white);
   text-decoration: none;
   font-weight: 500;
   font-size: 1rem;
@@ -124,7 +126,7 @@
 }
 
 .footer-links a:hover {
-  color: var(--primary-color);
+  color: var(--classy-gold);
   transform: translateY(-3px);
 }
 
@@ -133,7 +135,7 @@
 }
 
 .footer-social p {
-  color: var(--text-secondary);
+  color: var(--classy-muted);
   font-size: 1.1rem;
   margin-bottom: 1.5rem;
   font-weight: 500;
@@ -151,10 +153,10 @@
   justify-content: center;
   width: 50px;
   height: 50px;
-  background: linear-gradient(145deg, rgba(42, 42, 42, 0.8), rgba(26, 26, 26, 0.8));
-  border: 2px solid rgba(255, 107, 107, 0.2);
+  background: linear-gradient(145deg, var(--classy-navy), var(--classy-dark));
+  border: 2px solid rgba(226, 192, 68, 0.2);
   border-radius: 50%;
-  color: var(--text-primary);
+  color: var(--classy-white);
   text-decoration: none;
   font-size: 1.5rem;
   transition: var(--transition);
@@ -182,8 +184,8 @@
 
 .social-icons a:hover {
   transform: translateY(-8px) scale(1.1);
-  border-color: rgba(255, 107, 107, 0.6);
-  box-shadow: 0 20px 40px rgba(255, 107, 107, 0.4);
+  border-color: var(--classy-gold);
+  box-shadow: 0 20px 40px rgba(226, 192, 68, 0.4);
 }
 
 .footer-bottom {
@@ -191,13 +193,13 @@
   margin: 0 auto;
   padding: 2rem 24px;
   text-align: center;
-  border-top: 1px solid rgba(255, 107, 107, 0.2);
+  border-top: 1px solid rgba(226, 192, 68, 0.2);
   position: relative;
   z-index: 2;
 }
 
 .footer-bottom p {
-  color: var(--text-secondary);
+  color: var(--classy-muted);
   font-size: 1rem;
   font-weight: 400;
   opacity: 0.8;
@@ -206,18 +208,18 @@
 /* Keyframe Animation for Logo Glow */
 @keyframes logo-glow {
   0% { 
-    filter: drop-shadow(0 0 20px rgba(255, 107, 107, 0.5));
-    text-shadow: 0 0 30px rgba(255, 107, 107, 0.3);
+    filter: drop-shadow(0 0 20px rgba(226, 192, 68, 0.5));
+    text-shadow: 0 0 30px rgba(226, 192, 68, 0.3);
   }
   100% { 
-    filter: drop-shadow(0 0 40px rgba(78, 205, 196, 0.8));
-    text-shadow: 0 0 50px rgba(78, 205, 196, 0.5);
+    filter: drop-shadow(0 0 40px rgba(226, 192, 68, 0.8));
+    text-shadow: 0 0 50px rgba(226, 192, 68, 0.5);
   }
 }
 
 @keyframes line-glow {
-  0% { box-shadow: 0 0 20px rgba(255, 107, 107, 0.5); }
-  100% { box-shadow: 0 0 40px rgba(78, 205, 196, 0.8); }
+  0% { box-shadow: 0 0 20px rgba(226, 192, 68, 0.5); }
+  100% { box-shadow: 0 0 40px rgba(226, 192, 68, 0.8); }
 }
 
 /* Responsive Design */
