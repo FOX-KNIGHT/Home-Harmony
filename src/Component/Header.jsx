@@ -8,24 +8,24 @@ import Mithileshpic from './Photo/Mithilesh.jpg'; // Assuming Mithileshpic is us
 const teamMembersData = [
   {
     name: "Siddhant Satyajeet Jena",
-    role: "Team Leader & Visionary",
+    role: "Team Leader & Technical ",
     image: Siddhantpic,
-    skills: ["Leadership", "Strategy", "Innovation", "UI/UX Design"],
+    skills: ["Leadership", "Full-Stack", "Innovation", "UI/UX Design"],
     description: "Leading the charge in sustainable innovation with a vision to transform how families manage their homes. Passionate about creating technology that makes a real difference.",
-    linkedin: "#",
-    github: "#",
-    email: "siddhant@homeharmony.eco",
+    linkedin: "http://www.linkedin.com/in/siddhant-jena-457350389",
+    github: "https://github.com/FOX-KNIGHT",
+    insta: "https://www.instagram.com/s1ddhant._.18/",
     isLeader: true
   },
   {
-    name: "Asmit Gupta",
-    role: "Technical Lead & Developer",
+    name: "Rohit Kumar",
+    role: "VisionaryLead & Developer",
     image: asmitpic,
-    skills: ["React", "Full-Stack", "Design Systems", "Architecture"],
+    skills: ["React", "Strategy", "Design Systems", "Architecture"],
     description: "Crafting elegant solutions through code and design. Specializes in building scalable applications that prioritize user experience and performance.",
-    linkedin: "#",
-    github: "#",
-    email: "asmit@homeharmony.eco",
+    linkedin: "https://www.linkedin.com/in/rohit-kumar-604884333",
+    github: "https://github.com/DiscoveringRohit",
+    insta: "https://www.instagram.com/discoveringrohit/",
     isLeader: false
   }
 ];

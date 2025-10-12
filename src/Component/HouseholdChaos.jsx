@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Footer from './Footer.jsx'; // Import Footer
 import './HouseholdChaos.css';
 
 const HouseholdChaos = ({ 
@@ -55,17 +56,20 @@ const HouseholdChaos = ({
     title, 
     description, 
     onClick, 
-    featured = false, 
+    status,
     icon, 
     color = 'primary',
     features = []
   }) => (
-    <div className={`service-card service-card--${color} ${featured ? 'service-card--featured' : ''}`}>
+    <div className={`service-card service-card--${color} ${status === 'Available' ? 'service-card--featured' : 'service-card--upcoming'}`}>
       <div className="service-card__header">
         <div className="service-card__icon">
           <span className="service-icon">{icon}</span>
         </div>
-        {featured && <div className="featured-badge">Featured</div>}
+        {/* Use the new status badge */}
+        <div className={`status-badge status-badge--${status.toLowerCase()}`}>
+          {status === 'Available' ? 'Available' : 'Upcoming'}
+        </div>
       </div>
       
       <div className="service-card__content">
@@ -77,8 +81,12 @@ const HouseholdChaos = ({
         </div>
         
         {onClick && (
-          <button onClick={onClick} className={`service-card__button service-card__button--${color}`}>
-            <span>{title === "Meet Our Team" ? "Meet the Team" : "Get Started"}</span>
+          <button 
+            onClick={onClick} 
+            className={`service-card__button service-card__button--${color} ${status !== 'Available' ? 'service-card__button--disabled' : ''}`}
+            disabled={status !== 'Available'}
+          >
+            <span>{status === "Available" ? "Get Started" : "Coming Soon"}</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M7 17l9.2-9.2M17 17V7H7"/>
             </svg>
@@ -94,8 +102,8 @@ const HouseholdChaos = ({
       description: "Revolutionary AI-powered waste management with smart sorting, recycling optimization, carbon tracking, and community impact metrics.",
       icon: "♻️",
       color: "green",
+      status: "Available",
       onClick: onOpenWasteManagement,
-      featured: true,
       features: ["AI-Powered", "Eco-Tracking", "Smart Sorting"]
     },
     {
@@ -103,35 +111,35 @@ const HouseholdChaos = ({
       description: "Optimize your household chores and tasks with intelligent scheduling, priority handling, and real-time updates.",
       icon: "⏳",
       color: "blue",
+      status: "Available",
       onClick: onOpenQueue,
-      featured: true,
       features: ["Smart Queue", "Real-time", "Optimization"]
     },
     {
       title: "Family Chaos Manager",
-      description: "Transform your space with sustainable materials, energy-efficient layouts, and biophilic design principles that connect you with nature.",
+      description: "Transform chaos into calm with a central dashboard for shared chores, room clutter monitoring, and conflict resolution.",
       icon: "🏠",
       color: "purple",
+      status: "Available",
       onClick: onOpenFamilyApp,
-      featured: true,
       features: ["Family Tasks", "Conflict Solver", "Calendar Sync"]
     },
     {
-      title: "Meet Our Team",
-      description: "Discover the passionate innovators building HomeHarmony. Learn about our vision and dedication to your sustainable future.",
-      icon: "👥",
-      color: "red", 
-      onClick: onOpenTeamPage,
-      featured: false,
-      features: ["Vision", "Innovators", "Commitment"]
+      title: "Water Conservation AI",
+      description: "Intelligent monitoring and leak detection system to track, analyze, and reduce your daily household water usage.",
+      icon: "💧",
+      color: "cyan", // New color for visual distinction
+      status: "Upcoming",
+      onClick: onOpenComingSoon,
+      features: ["Leak Detection", "Smart Metering", "Usage Analysis"]
     },
     {
       title: "Solar Panel Installation",
       description: "Harness renewable energy with our premium solar solutions. Professional installation, smart monitoring, and guaranteed savings.",
       icon: "☀️",
       color: "yellow",
-      onClick: onOpenWasteManagement,
-      featured: true,
+      status: "Upcoming",
+      onClick: onOpenComingSoon,
       features: ["Expert Install", "Cost Savings", "Monitoring"]
     },
     {
@@ -139,8 +147,8 @@ const HouseholdChaos = ({
       description: "Connect all your eco-systems with intelligent automation, energy optimization, and seamless user experiences.",
       icon: "🏡",
       color: "orange",
+      status: "Upcoming",
       onClick: onOpenComingSoon,
-      featured: true,
       features: ["IoT Connected", "Automation", "Energy Efficient"]
     }
   ];
@@ -155,12 +163,7 @@ const HouseholdChaos = ({
 
   return (
     <div className={`household-chaos ${isVisible ? 'household-chaos--visible' : ''}`}>
-      <button className="household-chaos__close" onClick={handleClose} title="Close">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </button>
+      {/* Removed cross icon (close button) */}
 
       <nav className="floating-nav">
         <NavigationDot targetId="hero" isActive={activeSection === 'hero'} />
@@ -425,7 +428,7 @@ const HouseholdChaos = ({
                   <div className="contact__icon">🌍</div>
                   <div className="contact__details">
                     <h4>Visit Us</h4>
-                    <p>123 Green Street, Eco City</p>
+                    <p>Over The Internet</p>
                   </div>
                 </div>
                 <div 
@@ -459,6 +462,7 @@ const HouseholdChaos = ({
                     <option value="design">Home Design</option>
                     <option value="solar">Solar Installation</option>
                     <option value="integration">Smart Home Integration</option>
+                    <option value="water">Water Conservation AI</option>
                   </select>
                 </div>
                 <div className="form__group">
@@ -476,6 +480,10 @@ const HouseholdChaos = ({
             </div>
           </div>
         </section>
+        
+        {/* Added Footer component here */}
+        <Footer /> 
+
       </div>
     </div>
   );
