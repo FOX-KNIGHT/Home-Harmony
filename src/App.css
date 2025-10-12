@@ -1,46 +1,108 @@
-/* ===== APP BASE STYLES ===== */
-.App {
-  text-align: center;
-  min-height: 100vh;
-  position: relative;
+/* ========================================================================
+1. BASE & UTILITY STYLES (from src/index.css)
+========================================================================
+*/
+:root {
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.main-content {
-  width: 100%;
-  height: 100vh;
+/* Reset for all components */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+
+/* ========================================================================
+2. APP & MODAL CONTAINER STYLES (from src/App.css)
+========================================================================
+*/
+
+/* ===== APP BASE STYLES ===== */
+.App {
+    text-align: center;
+    min-height: 100vh;
+    position: relative;
 }
 
 /* ===== FULLSCREEN MODALS ===== */
 .fullscreen-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 1000;
-  background: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    background: #f7f7f7; 
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.fullscreen-modal > div {
+    flex-grow: 1;
 }
 
 /* ===== BACK BUTTON STYLES ===== */
+.fullscreen-back-btn,
+.fullscreen-close-btn {
+    position: fixed;
+    z-index: 1010; 
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid #e5e7eb;
+    color: #374151;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+    animation: slideInFromLeft 0.4s ease-out;
+}
+
 .fullscreen-back-btn {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 12px 16px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #374151;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  z-index: 1001;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    top: 15px;
+    left: 15px;
+}
+
+.fullscreen-close-btn {
+    top: 15px;
+    right: 15px;
+    padding: 10px;
+    width: 40px; 
+    height: 40px; 
+    justify-content: center;
+    animation: fadeIn 0.4s ease-out 0.1s both;
 }
 
 .fullscreen-back-btn:hover {
@@ -51,103 +113,32 @@
   color: #22c55e;
 }
 
-.fullscreen-back-btn:active {
-  transform: translateY(0);
-}
-
-.fullscreen-back-btn span {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-}
-
-/* ===== CLOSE BUTTON STYLES ===== */
-.fullscreen-close-btn {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  width: 48px;
-  height: 48px;
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  z-index: 1001;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-}
-
 .fullscreen-close-btn:hover {
   background: white;
   transform: translateY(-1px) scale(1.05);
   box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   border-color: #ef4444;
 }
-
 .fullscreen-close-btn:hover svg {
-  color: #ef4444;
+    color: #ef4444;
 }
 
-.fullscreen-close-btn:active {
-  transform: translateY(0) scale(1);
-}
 
-.fullscreen-close-btn svg {
-  color: #6b7280;
-  transition: color 0.2s ease;
-}
-
-/* ===== SPECIFIC MODAL CONTAINERS ===== */
-.waste-management-container,
-.queue-container,
-.familyapp-container,
-.coming-soon-container {
-  width: 100%;
-  height: 100vh;
-  overflow-y: auto;
-}
-
-/* ===== SPECIFIC MODAL STYLING ===== */
+/* ===== SPECIFIC MODAL BACKGROUNDS ===== */
 .waste-management-modal {
   background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
 }
-
 .queue-modal {
   background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
 }
-
 .familyapp-modal {
   background: linear-gradient(135deg, #f3e8ff 0%, #faf5ff 100%);
 }
-
 .coming-soon-modal {
   background: linear-gradient(135deg, #fef3c7 0%, #fffbeb 100%);
 }
 
-/* ===== COLOR-SPECIFIC BACK BUTTON VARIANTS ===== */
-.waste-back-btn:hover {
-  border-color: #22c55e;
-  color: #22c55e;
-}
-
-.queue-back-btn:hover {
-  border-color: #3b82f6;
-  color: #3b82f6;
-}
-
-.familyapp-back-btn:hover {
-  border-color: #8b5cf6;
-  color: #8b5cf6;
-}
-
-.coming-soon-back-btn:hover {
-  border-color: #f59e0b;
-  color: #f59e0b;
-}
-
-/* ===== LOGIN MODAL STYLES ===== */
+/* ===== LOGIN MODAL STYLES (from src/Component/Login.css) ===== */
 .login-overlay {
   position: fixed;
   top: 0;
@@ -174,135 +165,403 @@
   box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
 }
 
-.close-button {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  background: #f3f4f6;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 12px;
-  cursor: pointer;
-  font-size: 14px;
-  color: #6b7280;
-  transition: all 0.2s ease;
+.login-card {
+  /* Inherited from Login.css */
+  background: #fff;
+  padding: 2rem 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(44, 23, 94, 0.2);
+  width: 100%;
+  max-width: 320px;
+  text-align: center;
+  margin: 0 auto;
 }
 
-.close-button:hover {
-  background: #e5e7eb;
-  color: #374151;
+
+/* ===== APP & MODAL MEDIA QUERIES (Responsiveness) ===== */
+@media (max-width: 600px) {
+    .fullscreen-back-btn {
+        top: 10px;
+        left: 10px;
+        padding: 8px 10px;
+    }
+    .fullscreen-back-btn span {
+        display: none; 
+    }
+    .fullscreen-back-btn svg {
+        margin: 0;
+    }
+
+    .fullscreen-close-btn {
+        top: 10px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+    }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideInFromLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
-/* ===== RESPONSIVE DESIGN ===== */
+
+/* ========================================================================
+3. LANDING PAGE STYLES (from src/Component/HouseholdChaos.css)
+========================================================================
+*/
+
+/* General Landing Page Styles */
+.household-chaos {
+  /* ... (Existing styles for container, hero, sections) ... */
+  background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 50%, #d1fae5 100%);
+  min-height: 100vh;
+  position: relative;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+.services__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.contact__content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+}
+
+/* Landing Page Media Queries */
+@media (max-width: 1024px) {
+  .household-chaos__hero {
+    flex-direction: column;
+    text-align: center;
+    padding-top: 100px; /* Space for fixed header/buttons */
+    padding-bottom: 50px;
+  }
+  .hero__visual {
+      /* Reorder visual above content for mobile UX */
+      order: -1; 
+      margin-bottom: 2rem;
+  }
+  .about__content {
+    grid-template-columns: 1fr;
+  }
+  .contact__content {
+    grid-template-columns: 1fr;
+  }
+  .floating-nav {
+    /* Move floating nav to bottom center on small screens */
+    right: auto;
+    left: 50%;
+    bottom: 20px;
+    top: auto;
+    transform: translateX(-50%);
+    flex-direction: row;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 50px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+  }
+}
+
 @media (max-width: 768px) {
-  .fullscreen-back-btn {
-    top: 16px;
-    left: 16px;
-    padding: 10px 12px;
-    font-size: 13px;
-  }
-  
-  .fullscreen-back-btn span {
-    display: none;
-  }
-  
-  .fullscreen-close-btn {
-    top: 16px;
-    right: 16px;
-    width: 44px;
-    height: 44px;
-  }
-  
-  .login-container {
-    padding: 24px;
-    margin: 16px;
-  }
+    .nav__links {
+        display: none; /* Hide desktop navigation links on smaller devices */
+    }
+    .header__nav {
+        justify-content: center; /* Center logo when links are hidden */
+    }
+    .hero__title {
+        font-size: clamp(2rem, 8vw, 3rem);
+    }
+    .about__visual {
+        order: unset; /* Restore original order if on wider tablet screens */
+    }
+    .about__content {
+        gap: 2rem;
+    }
 }
 
 @media (max-width: 480px) {
-  .fullscreen-back-btn {
-    top: 12px;
-    left: 12px;
-    padding: 8px 10px;
-    min-width: 44px;
-    justify-content: center;
+    .household-chaos__close {
+        top: 10px;
+        right: 10px;
+        width: 35px;
+        height: 35px;
+    }
+    .hero__stats {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .hero__actions {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .services__grid {
+        grid-template-columns: 1fr; /* Force single column on very small phones */
+    }
+}
+
+
+/* ========================================================================
+4. HEADER/TEAM PAGE STYLES (from src/Component/Header.css)
+========================================================================
+*/
+
+/* Team Page - Ensure full responsiveness */
+.team-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f0f4f8 0%, #e0e7ee 100%); 
+  font-family: 'Inter', sans-serif;
+  padding-bottom: 50px; /* Footer Padding */
+}
+
+.team-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.members__grid {
+  /* Grid for team members (2 columns by default) */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.member-card {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Team Page Media Queries */
+@media (max-width: 768px) {
+  .nav__container {
+    padding: 10px 15px;
+  }
+  .nav__links {
+      display: none; /* Hide navigation links on small screens */
+  }
+  .nav__logo {
+      flex: 1;
+      justify-content: center;
   }
   
-  .fullscreen-close-btn {
-    top: 12px;
-    right: 12px;
-    width: 40px;
-    height: 40px;
+  .hero__title {
+      font-size: 2.5rem;
   }
   
-  .login-container {
-    padding: 20px;
-    margin: 12px;
-    border-radius: 12px;
-  }
-}
-
-/* ===== ACCESSIBILITY ===== */
-@media (prefers-reduced-motion: reduce) {
-  .fullscreen-back-btn,
-  .fullscreen-close-btn {
-    transition: none;
+  /* Stack team cards on mobile */
+  .members__grid, .values__grid {
+    grid-template-columns: 1fr;
   }
   
-  .fullscreen-back-btn:hover,
-  .fullscreen-close-btn:hover {
-    transform: none;
+  .mission__content {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 480px) {
+    .member-card {
+        padding: 15px;
+    }
+    .member-card__image {
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+
+/* ========================================================================
+5. FAMILY CHAOS MANAGER STYLES (from src/Component/family/style.css)
+========================================================================
+*/
+
+.main-grid {
+    display: grid;
+    /* Default Mobile: Single column with a min-max range for tablets/laptops */
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    padding: 18px;
+    max-width: 1200px;
+    margin: 18px auto;
+}
+.calendar-panel { grid-column: span 2; min-height: 420px; }
+
+.list-item { 
+    display:flex; 
+    align-items:center; 
+    justify-content:space-between; 
+    flex-wrap: wrap; 
+}
+
+/* Family Chaos Manager Media Queries */
+@media (max-width: 900px) {
+  /* This breakpoint handles Mobile and Tablet (single column layout for calendar) */
+  .calendar-panel { grid-column: auto; }
+  .main-grid {
+      grid-template-columns: 1fr;
+  }
+  
+  /* Robust List Item Flow for mobile */
+  .list-item {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+  }
+  
+  .list-item-content {
+      width: 100%; 
+      padding-bottom: 5px;
+      border-bottom: 1px dashed #f1e6e0;
+  }
+  
+  .list-item-actions {
+      margin-top: 8px;
+      justify-content: flex-start;
+      width: 100%;
+  }
+
+  .clutter-control-wrapper {
+      width: 100%;
+  }
+  .list-item input[type="range"] {
+      width: 100%;
   }
 }
 
-/* ===== FOCUS STYLES ===== */
-.fullscreen-back-btn:focus,
-.fullscreen-close-btn:focus,
-.close-button:focus {
-  outline: 2px solid #22c55e;
-  outline-offset: 2px;
-}
-
-/* ===== ANIMATION UTILITIES ===== */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
+@media (min-width: 901px) and (max-width: 1199px) {
+  /* Tablet/Small Desktop Layout (2 columns for content) */
+  .main-grid {
+      grid-template-columns: 1fr 1fr;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  .calendar-panel {
+      grid-column: span 2;
   }
 }
-
-@keyframes slideInFromLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+@media (min-width: 1200px) {
+    /* Desktop layout (3 columns, Calendar spans 2) */
+    .main-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .calendar-panel {
+        grid-column: span 2;
+    }
 }
 
-.fullscreen-modal {
-  animation: fadeIn 0.3s ease-out;
+
+/* ========================================================================
+6. QUEUE MANAGEMENT STYLES (from src/Component/Queue/queue.css)
+========================================================================
+*/
+
+.app {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 25px;
+    /* ... rest of non-responsive styles ... */
+}
+.slots-list {
+  display: flex;
+  gap: 15px; 
+  flex-wrap: wrap; 
+}
+.slots li {
+  flex: 1; 
+  min-width: 250px;
+  /* ... rest of list item styles ... */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.queue-serve-btn {
+    width: 100%;
+    padding: 8px 14px;
+    align-self: center;
+}
+.list-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    min-width: 100%;
+    margin: 10px 0;
+}
+.list-item > span {
+    word-break: break-word; 
 }
 
-.fullscreen-back-btn {
-  animation: slideInFromLeft 0.4s ease-out;
+
+/* Queue Management Media Queries */
+@media (max-width: 600px) {
+    .slots-list {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .app {
+        margin: 10px;
+        padding: 15px;
+    }
+    h1 {
+        font-size: 1.5rem;
+    }
+    
+    /* Form stacked */
+    .queue-form form {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .queue-form form input[type="text"], 
+    .queue-form form select,
+    .queue-form form button {
+        width: 100% !important;
+        flex: unset !important;
+    }
+    
+    /* Slot items stacked */
+    .slots li {
+        min-width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    .slot-info {
+        flex-basis: 100%;
+        margin-bottom: 5px;
+    }
+    .slots button, .queue-serve-btn {
+        width: 100%;
+    }
+    
+    /* Queue List items stacked */
+    .list-item {
+        min-width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    .queue-serve-btn {
+        width: 100% !important; 
+    }
+}
+@media (min-width: 601px) and (max-width: 900px) {
+    /* Tablet/Medium screen adjustments */
+    .slots-list {
+        gap: 10px;
+    }
+    .slots li {
+        flex-basis: calc(50% - 10px); /* Two columns */
+        min-width: unset;
+    }
+}
+@media (min-width: 901px) {
+    /* Desktop layout */
+    .slots li {
+        flex-basis: calc(33.33% - 10px); /* Three columns */
+        min-width: unset;
+    }
 }
 
-.fullscreen-close-btn {
-  animation: fadeIn 0.4s ease-out 0.1s both;
-}
 
-/* ===== PRINT STYLES ===== */
-@media print {
-  .fullscreen-back-btn,
-  .fullscreen-close-btn,
-  .close-button {
-    display: none;
-  }
-}

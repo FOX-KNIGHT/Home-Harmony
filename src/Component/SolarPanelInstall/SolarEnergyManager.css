@@ -1,0 +1,559 @@
+/* Solar Energy Manager - Styles inspired by wastemanage.css */
+
+/* --- Base Variables and Reset (Solar Theme) --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Solar Theme Colors - Based on yellow/green accents */
+  --solar-50: #fef9e7; /* Very light yellow */
+  --solar-100: #fdf6d9;
+  --solar-primary: #d97706; /* Orange/Yellow Dark */
+  --solar-primary-dark: #b45309;
+  --solar-accent: #16a34a; /* Green from HouseholdChaos */
+  
+  --secondary-500: #3b82f6; /* Blue for contrast */
+
+  /* General UI Colors */
+  --background: var(--solar-50);
+  --surface: #ffffff;
+  --surface-hover: #fcfcf4;
+  --border: #f3e9c4;
+  --text-primary: #171717;
+  --text-secondary: #525252;
+  --text-muted: #a3a3a3;
+  
+  /* Inherited Utilities */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --font-sans: 'Inter', sans-serif;
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--background);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+/* --- Layout Styles (Matching wastemanage.css structure) --- */
+.solar-app-container {
+  min-height: 100vh;
+}
+
+.desktop-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.mobile-layout {
+  display: none;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .desktop-layout {
+    display: none;
+  }
+  
+  .mobile-layout {
+    display: flex;
+  }
+}
+
+/* --- Sidebar (Matching wastemanage.css Sidebar) --- */
+.solar-sidebar {
+  width: 16rem;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+}
+
+.sidebar-header {
+  padding: 1.5rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--solar-primary-dark);
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 1rem 0.75rem;
+}
+
+.sidebar-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.75rem;
+  background: none;
+  border: none;
+  border-radius: var(--radius-lg);
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  margin-bottom: 0.25rem;
+}
+
+.sidebar-nav-item:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+
+.sidebar-nav-item--active {
+  background: var(--solar-100);
+  color: var(--solar-primary);
+  font-weight: 600;
+}
+
+.sidebar-footer {
+  padding: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+/* --- TopBar/Header (Minimalist) --- */
+.solar-topbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.topbar-status {
+  font-size: 0.875rem;
+  color: var(--solar-primary);
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  background: var(--solar-100);
+  border-radius: var(--radius-lg);
+}
+
+/* --- General Components (Matching wastemanage.css) --- */
+.page-container {
+  padding: 2rem;
+  max-width: 80rem;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.page-subtitle {
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.solar-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-fast);
+}
+
+.card-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.solar-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: var(--radius-lg);
+  border: none;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.solar-btn--primary {
+  background: var(--solar-primary);
+  color: white;
+}
+
+.solar-btn--accent {
+  background: var(--solar-accent);
+  color: white;
+}
+
+.solar-btn--secondary {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+.solar-btn--close {
+  width: 100%;
+  background: #ef4444; /* Red accent for closing */
+  color: white;
+}
+
+
+/* --- Dashboard (Home) Page Styles --- */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.metric-card {
+  position: relative;
+  overflow: hidden;
+  text-align: left;
+}
+
+.metric-card--primary { border-top: 3px solid var(--solar-primary); }
+.metric-card--secondary { border-top: 3px solid var(--solar-accent); }
+.metric-card--accent { border-top: 3px solid #f97316; } /* Using a different orange for contrast */
+.metric-card--info { border-top: 3px solid var(--secondary-500); } 
+
+.metric-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.metric-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.metric-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--solar-primary);
+  margin-bottom: 0.25rem;
+}
+.metric-card--secondary .metric-value { color: var(--solar-accent); }
+.metric-card--accent .metric-value { color: #f97316; }
+.metric-card--info .metric-value { color: var(--secondary-500); }
+
+
+.metric-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.chart-placeholder {
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.chart-content {
+  color: var(--text-muted);
+}
+
+.action-grid {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+}
+
+/* --- Analytics (Calculator) Page Styles --- */
+.analytics-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+}
+
+.input-group {
+    margin-bottom: 1rem;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: var(--text-primary);
+}
+
+.input-group input[type="number"] {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+}
+
+.calculate-btn {
+    margin-top: 1.5rem;
+    width: 100%;
+}
+
+.analytics-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.results-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+.mini-card {
+    padding: 1rem;
+    text-align: center;
+}
+.mini-card .metric-value {
+    font-size: 1.5rem;
+}
+
+
+/* --- Schedule (Booking) Page Styles --- */
+.booking-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+}
+
+.calendar-placeholder {
+  background: var(--solar-100);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  text-align: center;
+  margin: 1rem 0;
+  min-height: 16rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed var(--border);
+}
+
+.calendar-month {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.time-slots {
+  margin-top: 2rem;
+}
+
+.slots-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.time-slot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  margin-bottom: 0.75rem;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.time-slot:hover {
+  border-color: var(--solar-primary);
+  background: var(--solar-100);
+}
+
+.slot-text {
+  flex: 1;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.slot-badge {
+  background: var(--solar-accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.booking-confirm {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+
+/* --- AI Design Page Styles --- */
+.reports-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.report-generator {
+  height: fit-content;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+.report-generate-btn {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.report-result {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  background: var(--solar-100);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+}
+
+.result-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--solar-primary);
+  margin-bottom: 1rem;
+}
+
+.result-content {
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.classifier-upload {
+    text-align: center;
+}
+
+.upload-zone {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.upload-label {
+  display: block;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-xl);
+  padding: 3rem 2rem;
+  text-align: center;
+  cursor: pointer;
+}
+
+.upload-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* --- Mobile Styles --- */
+.mobile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.mobile-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--solar-primary);
+}
+
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 0.75rem;
+  z-index: 50;
+  display: flex;
+  justify-content: space-around;
+}
+
+.mobile-nav-item {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    transition: var(--transition-fast);
+    padding: 0.5rem;
+}
+
+.mobile-nav-item--active {
+    color: var(--solar-primary);
+}
+
+@media (max-width: 1024px) {
+  .analytics-layout,
+  .booking-layout,
+  .reports-layout {
+    grid-template-columns: 1fr;
+  }
+}

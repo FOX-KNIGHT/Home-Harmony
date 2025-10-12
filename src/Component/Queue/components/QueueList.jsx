@@ -15,15 +15,6 @@ const listStyle = {
     justifyContent: "space-between",
     alignItems: "center",
   },
-  button: {
-    marginLeft: "15px",
-    background: "#2ecc71",
-    color: "white",
-    border: "none",
-    padding: "6px 10px",
-    borderRadius: "6px",
-    cursor: "pointer",
-  },
   wait: {
     marginLeft: "10px",
     color: "#555",
@@ -35,7 +26,7 @@ const listStyle = {
   },
 };
 
-const QueueList = ({ queue, onServe }) => {
+const QueueList = ({ queue, onServe }) => { 
   return (
     <div>
       <h2>Current Queue</h2>
@@ -54,7 +45,7 @@ const QueueList = ({ queue, onServe }) => {
             {queue.map((user, index) => (
               <motion.li
                 key={user.id}
-                style={listStyle.li}
+                className="list-item"
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -15 }}
@@ -67,12 +58,12 @@ const QueueList = ({ queue, onServe }) => {
                   </span>
                 </span>
                 <motion.button
-                  style={listStyle.button}
+                  className="queue-serve-btn"
                   onClick={() => onServe(user.id)}
                   whileHover={{ scale: 1.05, backgroundColor: "#27ae60" }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  Serve
+                  Serve Now
                 </motion.button>
               </motion.li>
             ))}

@@ -30,26 +30,199 @@ h2 {
   padding: 0;
 }
 
+/* Added slots-list for flex layout */
+.slots-list {
+  display: flex;
+  gap: 15px; /* Spacing between slots */
+  flex-wrap: wrap; /* Ensure responsiveness */
+}
+
 .slots li {
+  flex: 1; /* Equal width distribution */
+  min-width: 250px;
   margin: 10px 0;
   padding: 12px;
-  background: #ecf0f1;
   border-radius: 8px;
   display: flex;
+  flex-direction: column; /* Stack info and button/status */
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  border: 1px solid #ddd;
 }
 
-.slots button {
-  background: #e67e22;
+.slot-item--busy {
+  background: #fbe0e0; /* Light red/orange for busy */
+  border-left: 5px solid #e67e22;
+}
+
+.slot-item--free {
+  background: #e6f7e9; /* Light green for free */
+  border-left: 5px solid #2ecc71;
+}
+
+.slot-info {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.slot-title {
+  color: #2c3e50;
+  font-size: 1.1em;
+}
+
+.slot-status {
+  color: #2ecc71;
+  font-weight: 700;
+  margin-top: 5px;
+}
+
+.user-name {
+    font-weight: 600;
+    color: #e67e22;
+}
+
+.slots button, .queue-serve-btn {
+  background: #e67e22; /* Accent color */
   color: white;
   border: none;
-  padding: 6px 12px;
+  padding: 8px 14px;
   border-radius: 6px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.1s;
+  align-self: flex-end; /* Align button to the right/bottom */
+  width: 100%; /* Make button fill slot width for better mobile interaction */
 }
 
-.slots button:hover {
+.slots button:hover, .queue-serve-btn:hover {
   background: #d35400;
+  transform: translateY(-1px);
+}
+
+.slots button:active, .queue-serve-btn:active {
+  transform: translateY(0);
+}
+
+/* QueueList Specific styles */
+.list-item {
+  background: #ffffff !important; 
+  border: 1px solid #cceeff; /* Light blue border */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.list-item strong {
+    color: #3498db;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+    .slots-list {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .slots li {
+        min-width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    .app {
+        margin: 10px;
+        padding: 15px;
+    }
+    .slots li {
+        flex-direction: row; 
+        flex-wrap: wrap;
+        align-items: center;
+    }
+    .slot-info {
+        flex-basis: 100%;
+        margin-bottom: 5px;
+    }
+    .slots button, .queue-serve-btn {
+        width: 100%;
+        padding: 8px 12px;
+    }
+    .list-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    .queue-serve-btn {
+        width: auto !important; /* Override the slot list width */
+        align-self: flex-end;
+    }
+}
+/* ... (Keep all existing styles) ... */
+
+/* Responsive Overrides */
+@media (max-width: 600px) {
+    .slots-list {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .app {
+        margin: 10px;
+        padding: 15px;
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+    }
+    
+    /* Make form inputs full width on mobile */
+    .queue-form form {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .queue-form form input[type="text"], 
+    .queue-form form select {
+        width: 100%;
+    }
+    
+    /* Fine-tuning slot items for small screens */
+    .slots li {
+        min-width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        /* Re-enable flex-wrap to handle long names gracefully */
+        flex-direction: column; 
+        align-items: flex-start;
+        gap: 8px;
+    }
+    .slot-info {
+        flex-basis: 100%;
+        margin-bottom: 0;
+    }
+    .slots button, .queue-serve-btn {
+        width: 100%; /* Button should be full width */
+        padding: 8px 12px;
+        align-self: center; /* Center the button */
+    }
+    
+    /* Adjustments for the queue list item */
+    .list-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    .list-item > span {
+        word-break: break-word; /* Prevent overflow on long names */
+    }
+    .queue-serve-btn {
+        width: 100% !important; 
+        align-self: center;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+    /* Tablet/Medium screen adjustments */
+    .slots-list {
+        gap: 10px;
+    }
+    .slots li {
+        flex-basis: calc(50% - 10px); /* Two columns */
+    }
 }

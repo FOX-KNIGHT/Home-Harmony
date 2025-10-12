@@ -130,7 +130,7 @@ const HouseholdChaos = ({
       description: "Harness renewable energy with our premium solar solutions. Professional installation, smart monitoring, and guaranteed savings.",
       icon: "☀️",
       color: "yellow",
-      onClick: onOpenComingSoon,
+      onClick: onOpenWasteManagement,
       featured: true,
       features: ["Expert Install", "Cost Savings", "Monitoring"]
     },

@@ -10,11 +10,11 @@ export default function Rooms() {
       <div>
         {rooms.map(r => (
           <div key={r.id} className="list-item">
-            <div>
+            <div className="list-item-content">
               <strong>{r.name}</strong>
               <div className="small">Clutter: {r.clutter}%</div>
             </div>
-            <div>
+            <div className="clutter-control-wrapper">
               <input type="range" min="0" max="100" value={r.clutter} onChange={e => update(r.id, +e.target.value)} />
             </div>
           </div>
