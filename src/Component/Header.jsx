@@ -1,425 +1,651 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import './Header.css';
-import asmitpic from './Photo/Asmit.jpg';
-import Siddhantpic from './Photo/Sidd.png';
-import Mithileshpic from './Photo/Mithilesh.jpg'; // Assuming Mithileshpic is used somewhere else or will be part of the full team later. Keeping the import clean.
 
-// --- Data ---
-const teamMembersData = [
-  {
-    name: "Siddhant Satyajeet Jena",
-    role: "Team Leader & Technical ",
-    image: Siddhantpic,
-    skills: ["Leadership", "Full-Stack", "Innovation", "UI/UX Design"],
-    description: "Leading the charge in sustainable innovation with a vision to transform how families manage their homes. Passionate about creating technology that makes a real difference.",
-    linkedin: "http://www.linkedin.com/in/siddhant-jena-457350389",
-    github: "https://github.com/FOX-KNIGHT",
-    insta: "https://www.instagram.com/s1ddhant._.18/",
-    isLeader: true
-  },
-  {
-    name: "Rohit Kumar",
-    role: "VisionaryLead & Developer",
-    image: asmitpic,
-    skills: ["React", "Strategy", "Design Systems", "Architecture"],
-    description: "Crafting elegant solutions through code and design. Specializes in building scalable applications that prioritize user experience and performance.",
-    linkedin: "https://www.linkedin.com/in/rohit-kumar-604884333",
-    github: "https://github.com/DiscoveringRohit",
-    insta: "https://www.instagram.com/discoveringrohit/",
-    isLeader: false
-  }
-];
+// Import team photos (you'll need to add these to your project)
+const asmitpic = '/api/placeholder/150/150';
+const Muskanpic = '/api/placeholder/150/150';
+const Siddhantpic = '/api/placeholder/150/150';
+const Shlokpic = '/api/placeholder/150/150';
+const Mithileshpic = '/api/placeholder/150/150';
 
-// --- Sub-Components for Clarity ---
+const Header = ({ openHouseholdChaos = () => console.log('Opening Household Chaos...') }) => {
+  const [statsAnimated, setStatsAnimated] = useState(false);
+  const [showInitialAnimation, setShowInitialAnimation] = useState(true);
+  const [scrollDirection, setScrollDirection] = useState('up');
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [isNavVisible, setIsNavVisible] = useState(true);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+  
+  const navRef = useRef(null);
+  const statsRef = useRef(null);
+  const projectRef = useRef(null);
+  const particleIntervalRef = useRef(null);
+  const observersRef = useRef([]);
 
-const NavLink = ({ id, label, isActive, onClick }) => (
-  <li>
-    <button 
-      onClick={() => onClick(id)}
-      className={`nav__link ${isActive ? 'nav__link--active' : ''}`}
-    >
-      {label}
-    </button>
-  </li>
-);
+  // Team member data
+  const teamMembers = useMemo(() => [
+    {
+      id: 'siddhant',
+      name: 'Siddhant Satyajeet Jena',
+      role: 'Team Leader & Project Architect',
+      photo: Siddhantpic,
+      skills: ['Leadership', 'Strategy', 'UI/UX Design'],
+      isLeader: true,
+      bio: 'Visionary leader driving innovation in household technology solutions.'
+    },
+    {
+      id: 'asmit',
+      name: 'Asmit Gupta',
+      role: 'Frontend Developer & Designer',
+      photo: asmitpic,
+      skills: ['React', 'Design Systems', 'JavaScript'],
+      isLeader: false,
+      bio: 'Creating beautiful and intuitive user experiences.'
+    },
+    {
+      id: 'shlok',
+      name: 'Shlok Katiyar',
+      role: 'Backend Developer & Systems',
+      photo: Shlokpic,
+      skills: ['Node.js', 'Database', 'API Design'],
+      isLeader: false,
+      bio: 'Building robust and scalable backend architectures.'
+    },
+    {
+      id: 'muskan',
+      name: 'Muskan Gupta',
+      role: 'Data Scientist & Analytics',
+      photo: Muskanpic,
+      skills: ['Python', 'ML/AI', 'Analytics'],
+      isLeader: false,
+      bio: 'Transforming data into actionable household insights.'
+    },
+    {
+      id: 'mithilesh',
+      name: 'Mithilesh Das',
+      role: 'DevOps & Quality Engineer',
+      photo: Mithileshpic,
+      skills: ['DevOps', 'Cloud', 'Testing'],
+      isLeader: false,
+      bio: 'Ensuring seamless deployment and quality assurance.'
+    }
+  ], []);
 
-const TeamCard = ({ member }) => (
-  <div 
-    className={`team-card ${member.isLeader ? 'team-card--leader' : ''}`}
-  >
-    {member.isLeader && (
-      <div className="team-card__badge">
-        <span>Team Leader</span>
-      </div>
-    )}
+  // Feature data
+  const features = useMemo(() => [
+    {
+      icon: '🤖',
+      title: 'Smart Task Automation',
+      description: 'AI-powered scheduling and routine optimization that learns your family\'s patterns.'
+    },
+    {
+      icon: '👨‍👩‍👧‍👦',
+      title: 'Family Coordination Hub',
+      description: 'Centralized communication and activity planning for all family members.'
+    },
+    {
+      icon: '📊',
+      title: 'Household Analytics',
+      description: 'Track patterns, optimize efficiency, and gain insights into home management.'
+    },
+    {
+      icon: '🏆',
+      title: 'Achievement System',
+      description: 'Gamified chores and family challenges to motivate everyone.'
+    },
+    {
+      icon: '🔔',
+      title: 'Smart Notifications',
+      description: 'Contextual reminders and intelligent alerts when you need them.'
+    },
+    {
+      icon: '💰',
+      title: 'Budget Management',
+      description: 'Track household expenses and optimize your family budget.'
+    }
+  ], []);
+
+  // Stats data
+  const stats = useMemo(() => [
+    { number: 500, label: 'Families Helped', suffix: '+' },
+    { number: 95, label: 'Satisfaction Rate', suffix: '%' },
+    { number: 24, label: 'Hours Saved/Week', suffix: '' },
+    { number: 10, label: 'Smart Features', suffix: '+' }
+  ], []);
+
+  // Mobile menu toggle
+  const toggleMobileMenu = useCallback(() => {
+    setIsMobileMenuOpen(prev => !prev);
+  }, []);
+
+  // Close mobile menu
+  const closeMobileMenu = useCallback(() => {
+    setIsMobileMenuOpen(false);
+  }, []);
+
+  // Optimized scroll handler
+  const handleScroll = useCallback(() => {
+    const currentScrollY = window.scrollY;
+    const scrollThreshold = 100;
+
+    // Update scroll direction and nav visibility
+    if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
+      if (scrollDirection !== 'down') {
+        setScrollDirection('down');
+        setIsNavVisible(false);
+      }
+    } else {
+      if (scrollDirection !== 'up') {
+        setScrollDirection('up');
+        setIsNavVisible(true);
+      }
+    }
+
+    setLastScrollY(currentScrollY);
+
+    // Update navbar style
+    if (navRef.current) {
+      const isScrolled = currentScrollY > scrollThreshold;
+      navRef.current.classList.toggle('scrolled', isScrolled);
+    }
+
+    // Update active section
+    const sections = ['home', 'team', 'project', 'features'];
+    for (const section of sections) {
+      const element = document.getElementById(section);
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        if (rect.top <= 100 && rect.bottom >= 100) {
+          setActiveSection(section);
+          break;
+        }
+      }
+    }
+  }, [lastScrollY, scrollDirection]);
+
+  // Smooth scroll handler
+  const handleAnchorClick = useCallback((e) => {
+    e.preventDefault();
+    const href = e.currentTarget.getAttribute('href');
+    const target = document.querySelector(href);
     
-    <div className="team-card__image-wrapper">
-      <div className="team-card__glow"></div>
-      <img 
-        src={member.image} 
-        alt={member.name} 
-        className="team-card__image"
-      />
-      <div className="team-card__overlay">
-        <div className="social-links">
-          <a href={member.linkedin} className="social-link" aria-label="LinkedIn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-            </svg>
-          </a>
-          <a href={member.github} className="social-link" aria-label="GitHub">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-            </svg>
-          </a>
-          <a href={`mailto:${member.email}`} className="social-link" aria-label="Email">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-              <polyline points="22,6 12,13 2,6"/>
-            </svg>
-          </a>
-        </div>
-      </div>
-    </div>
-    
-    <div className="team-card__content">
-      <h3 className="team-card__name">{member.name}</h3>
-      <p className="team-card__role">{member.role}</p>
-      <p className="team-card__description">{member.description}</p>
+    if (target) {
+      const navHeight = navRef.current?.offsetHeight || 80;
+      const targetPosition = target.offsetTop - navHeight;
       
-      <div className="team-card__skills">
-        {/* Removed redundant skills-label wrapper for cleaner structure */}
-        <div className="skills-list">
-          {member.skills.map((skill, idx) => (
-            <span key={idx} className="skill-badge">{skill}</span>
+      window.scrollTo({
+        top: targetPosition,
+        behavior: 'smooth'
+      });
+    }
+    
+    closeMobileMenu();
+  }, [closeMobileMenu]);
+
+  // Stats animation
+  const animateStats = useCallback(() => {
+    const statNumbers = document.querySelectorAll('.stat-number');
+    
+    statNumbers.forEach((stat, index) => {
+      const finalNumber = parseInt(stat.dataset.number);
+      const suffix = stat.dataset.suffix || '';
+      let current = 0;
+      const duration = 2000;
+      const steps = 60;
+      const increment = finalNumber / steps;
+      const stepDuration = duration / steps;
+
+      const animate = () => {
+        current += increment;
+        if (current < finalNumber) {
+          stat.textContent = Math.floor(current) + suffix;
+          setTimeout(animate, stepDuration);
+        } else {
+          stat.textContent = finalNumber + suffix;
+        }
+      };
+
+      setTimeout(animate, index * 200);
+    });
+  }, []);
+
+  // Feature animation
+  const animateFeatures = useCallback(() => {
+    const featureItems = document.querySelectorAll('.project-features .feature-item');
+    
+    featureItems.forEach((feature, index) => {
+      setTimeout(() => {
+        feature.classList.add('animate-in');
+      }, index * 150);
+    });
+  }, []);
+
+  // Create particle effect
+  const createParticle = useCallback(() => {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+
+    const shapes = ['circle', 'square', 'triangle'];
+    const colors = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe'];
+    
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    const randomShape = shapes[Math.floor(Math.random() * shapes.length)];
+
+    particle.classList.add(`particle-${randomShape}`);
+    particle.style.background = randomColor;
+    particle.style.left = Math.random() * 100 + 'vw';
+    particle.style.animationDuration = (Math.random() * 3 + 4) + 's';
+    particle.style.animationDelay = Math.random() * 2 + 's';
+
+    document.body.appendChild(particle);
+
+    setTimeout(() => {
+      if (particle.parentNode) {
+        particle.remove();
+      }
+    }, 8000);
+  }, []);
+
+  // Team member interaction handlers
+  const handleTeamMemberHover = useCallback((e, isEntering) => {
+    const member = e.currentTarget;
+    member.classList.toggle('hovered', isEntering);
+  }, []);
+
+  const handleLeaderClick = useCallback((e) => {
+    e.currentTarget.classList.add('pulse-animation');
+    setTimeout(() => {
+      e.currentTarget.classList.remove('pulse-animation');
+    }, 600);
+  }, []);
+
+  // Main useEffect
+  useEffect(() => {
+    const loadingTimer = setTimeout(() => {
+      setShowInitialAnimation(false);
+    }, 3000);
+
+    let ticking = false;
+    const throttledScrollHandler = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    const anchorLinks = document.querySelectorAll('a[href^="#"]');
+    anchorLinks.forEach(anchor => {
+      anchor.addEventListener('click', handleAnchorClick);
+    });
+
+    // Intersection Observer for animations
+    const fadeInObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    );
+
+    const statsObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !statsAnimated) {
+            animateStats();
+            setStatsAnimated(true);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    const projectObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            animateFeatures();
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    // Observe elements
+    const fadeInSections = document.querySelectorAll('.fade-in-section');
+    fadeInSections.forEach(el => fadeInObserver.observe(el));
+
+    if (statsRef.current) {
+      statsObserver.observe(statsRef.current);
+    }
+
+    if (projectRef.current) {
+      projectObserver.observe(projectRef.current);
+    }
+
+    observersRef.current = [fadeInObserver, statsObserver, projectObserver];
+
+    particleIntervalRef.current = setInterval(createParticle, 2000);
+
+    window.addEventListener('scroll', throttledScrollHandler, { passive: true });
+
+    return () => {
+      clearTimeout(loadingTimer);
+      
+      anchorLinks.forEach(anchor => {
+        anchor.removeEventListener('click', handleAnchorClick);
+      });
+      window.removeEventListener('scroll', throttledScrollHandler);
+
+      observersRef.current.forEach(observer => observer.disconnect());
+
+      if (particleIntervalRef.current) {
+        clearInterval(particleIntervalRef.current);
+      }
+
+      const particles = document.querySelectorAll('.particle');
+      particles.forEach(particle => particle.remove());
+    };
+  }, [handleScroll, handleAnchorClick, animateStats, animateFeatures, createParticle, statsAnimated]);
+
+  // Render team member
+  const renderTeamMember = useCallback((member) => (
+    <div
+      key={member.id}
+      className={`team-member ${member.isLeader ? 'leader' : ''}`}
+      onMouseEnter={(e) => handleTeamMemberHover(e, true)}
+      onMouseLeave={(e) => handleTeamMemberHover(e, false)}
+      onClick={member.isLeader ? handleLeaderClick : undefined}
+    >
+      <div className="member-photo">
+        <img
+          src={member.photo}
+          alt={member.name}
+          className="member-avatar"
+          loading="lazy"
+        />
+        <div className="photo-glow"></div>
+        {member.isLeader && <div className="leader-crown">👑</div>}
+      </div>
+      <div className="member-info">
+        <div className="member-name">{member.name}</div>
+        <div className="member-role">{member.role}</div>
+        <div className="member-bio">{member.bio}</div>
+        <div className="member-skills">
+          {member.skills.map((skill, index) => (
+            <span key={index} className="skill-tag">{skill}</span>
           ))}
         </div>
       </div>
     </div>
-  </div>
-);
+  ), [handleTeamMemberHover, handleLeaderClick]);
 
-// --- Main Component ---
-const Header = ({ openHouseholdChaos }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [activeSection, setActiveSection] = useState('hero');
-
-  useEffect(() => {
-    const timer = setTimeout(() => setIsVisible(true), 100);
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Debounced scroll handler is crucial for performance with complex CSS animations
-  const scrollToSection = useCallback((id) => {
-    const container = document.querySelector('.header-page');
-    const element = container?.querySelector(`#${id}`);
-    if (element) {
-      element.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
-    }
-  }, []);
-
-  // Observer/Scroll logic to detect active section
-  useEffect(() => {
-    const container = document.querySelector('.header-page');
-    if (!container) return;
-
-    const handleScroll = () => {
-      const sections = ['hero', 'team', 'mission', 'values'];
-      // Offset to position the active link correctly in the navigation
-      const scrollPosition = container.scrollTop + 150; 
-
-      for (const sectionId of sections.reverse()) {
-        const element = container.querySelector(`#${sectionId}`);
-        if (element && element.offsetTop <= scrollPosition) {
-          setActiveSection(sectionId);
-          break;
-        }
-      }
-    };
-
-    // Since the content is all in the same component, scroll listener is added to the container.
-    container.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', handleScroll);
-    handleScroll(); // Initial check
-
-    return () => {
-      container.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
-    };
-  }, []);
-
-  const sections = [
-    { id: "hero", label: "Overview" },
-    { id: "team", label: "Team" },
-    { id: "mission", label: "Mission" },
-    { id: "values", label: "Values" }
-  ];
+  // Render feature item
+  const renderFeatureItem = useCallback((feature, index) => (
+    <div key={index} className="feature-item">
+      <div className="feature-icon">{feature.icon}</div>
+      <div className="feature-content">
+        <h4 className="feature-title">{feature.title}</h4>
+        <p className="feature-description">{feature.description}</p>
+      </div>
+    </div>
+  ), []);
 
   return (
-    <div className={`header-page ${isVisible ? 'header-page--visible' : ''}`}>
-      {/* Navigation */}
-      <nav className="header-page__nav">
-        <div className="nav__container">
-          <div className="nav__logo">
-            <span className="nav__logo-icon">👥</span>
-            <div className="nav__logo-text">
-              <span className="logo-primary">Team</span>
-              <span className="logo-secondary">HomeHarmony</span>
+    <div className="app-container">
+      {/* Loading Animation */}
+      {showInitialAnimation && (
+        <div className="loading-overlay">
+          <div className="loading-content">
+            <h1 className="loading-title">HomeHarmony</h1>
+            <div className="loading-subtitle">Transforming Chaos into Harmony</div>
+            <div className="loading-spinner">
+              <div className="spinner-ring"></div>
             </div>
           </div>
-          
-          <ul className="nav__links">
-            {sections.map(link => (
-              <NavLink 
-                key={link.id}
-                id={link.id} 
-                label={link.label} 
-                isActive={activeSection === link.id}
-                onClick={scrollToSection}
-              />
-            ))}
-            <li>
-              <button onClick={openHouseholdChaos} className="nav__cta">
-                <span>Services</span>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-              </button>
-            </li>
-          </ul>
+        </div>
+      )}
+
+      {/* Navigation */}
+      <nav className={`navbar ${!isNavVisible ? 'navbar-hidden' : ''}`} ref={navRef}>
+        <div className="container">
+          <div className="nav-content">
+            <div className="logo">
+              <span className="logo-icon">🏠</span>
+              <span className="logo-text">HomeHarmony</span>
+            </div>
+            
+            {/* Mobile Menu Button */}
+            <button 
+              className={`mobile-menu-btn ${isMobileMenuOpen ? 'active' : ''}`}
+              onClick={toggleMobileMenu}
+              aria-label="Toggle mobile menu"
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+
+            {/* Navigation Links */}
+            <ul className={`nav-links ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
+              <li><a href="#home" className={`nav-link ${activeSection === 'home' ? 'active' : ''}`}>Home</a></li>
+              <li><a href="#team" className={`nav-link ${activeSection === 'team' ? 'active' : ''}`}>Team</a></li>
+              <li><a href="#project" className={`nav-link ${activeSection === 'project' ? 'active' : ''}`}>Solution</a></li>
+              <li><a href="#features" className={`nav-link ${activeSection === 'features' ? 'active' : ''}`}>Features</a></li>
+              <li>
+                <button 
+                  onClick={() => { openHouseholdChaos(); closeMobileMenu(); }} 
+                  className="experience-btn"
+                  aria-label="Experience HomeHarmony"
+                >
+                  <span className="experience-icon">✨</span>
+                  Experience
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="header-hero" id="hero">
-        <div className="hero__background">
-          <div className="hero__gradient"></div>
-          <div className="hero__shapes">
-            <div className="shape shape--1"></div>
-            <div className="shape shape--2"></div>
-            <div className="shape shape--3"></div>
+      <section className="hero" id="home">
+        <div className="hero-background">
+          <div className="hero-gradient"></div>
+          <div className="floating-shapes">
+            <div className="shape shape-1"></div>
+            <div className="shape shape-2"></div>
+            <div className="shape shape-3"></div>
+            <div className="shape shape-4"></div>
           </div>
         </div>
-        
-        <div className="hero__content">
-          <div className="hero__badge">
-            <span className="badge-shine"></span>
-            <span className="badge-icon">✨</span>
-            <span className="badge-text">Innovation Challenge 2025</span>
-          </div>
-          
-          <h1 className="hero__title">
-            <span className="title__line">The Architects of</span>
-            <span className="title__highlight">HomeHarmony</span>
-          </h1>
-          
-          <p className="hero__description">
-            Two visionaries united by a singular mission: to revolutionize sustainable living 
-            through intelligent technology. We're not just building software—we're crafting 
-            the future of eco-conscious home management.
-          </p>
-          
-          <div className="hero__stats">
-            <div className="stat">
-              <div className="stat__value">2</div>
-              <div className="stat__label">Core Members</div>
+        <div className="container">
+          <div className="hero-content">
+            <div className="innovation-badge">
+              <span className="badge-icon">✨</span>
+              <span>Innovation Challenge 2025</span>
             </div>
-            <div className="stat">
-              <div className="stat__value">1</div>
-              <div className="stat__label">Shared Vision</div>
-            </div>
-            <div className="stat">
-              <div className="stat__value">∞</div>
-              <div className="stat__label">Possibilities</div>
+            <h1 className="hero-title">
+              <span className="title-main">Transform Your Home</span>
+              <span className="title-highlight">From Chaos to Harmony</span>
+            </h1>
+            <div className="hero-subtitle">Smart Solutions for Modern Households</div>
+            <p className="hero-description">
+              Meet the innovative team revolutionizing household management through intelligent
+              technology. Five passionate developers creating seamless solutions for busy families
+              to organize, manage, and optimize their daily routines.
+            </p>
+            <div className="hero-actions">
+              <a href="#team" className="cta-btn primary">
+                <span>Discover Our Vision</span>
+                <i className="btn-arrow">→</i>
+              </a>
+              <button onClick={openHouseholdChaos} className="cta-btn secondary">
+                <span>Try Demo</span>
+              </button>
             </div>
           </div>
-          
-          <button onClick={() => scrollToSection('team')} className="hero__cta">
-            <span>Meet Our Team</span>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M7 13l5 5 5-5M7 6l5 5 5-5"/>
-            </svg>
-          </button>
         </div>
       </section>
 
-      {/* Team Section */}
-      <section className="header-team" id="team">
-        <div className="team__container">
-          <div className="section__header">
-            <div className="section__badge">Our Team</div>
-            <h2 className="section__title">Meet the Innovators</h2>
-            <p className="section__subtitle">
-              Driven by passion, united by purpose, committed to excellence
-            </p>
-          </div>
-          
-          <div className="team__grid">
-            {teamMembersData.map((member, index) => (
-              <TeamCard key={index} member={member} />
+      {/* Stats Section */}
+      <section className="stats fade-in-section" ref={statsRef}>
+        <div className="container">
+          <div className="stats-grid">
+            {stats.map((stat, index) => (
+              <div key={index} className="stat-item">
+                <div 
+                  className="stat-number" 
+                  data-number={stat.number}
+                  data-suffix={stat.suffix}
+                >
+                  0{stat.suffix}
+                </div>
+                <div className="stat-label">{stat.label}</div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Mission Section */}
-      <section className="header-mission" id="mission">
-        <div className="mission__container">
-          <div className="section__header">
-            <div className="section__badge">Our Mission</div>
-            <h2 className="section__title">Driven by Purpose</h2>
-            <p className="section__subtitle">
-              Building tomorrow's sustainable living solutions today
-            </p>
+      {/* Team Section */}
+      <section className="team fade-in-section" id="team">
+        <div className="container">
+          <div className="section-header">
+            <h2 className="section-title">
+              <span className="section-icon">🌟</span>
+              Meet Team HomeHarmony
+            </h2>
+            <p className="section-subtitle">Five innovative minds, one harmonious vision</p>
           </div>
-          
-          <div className="mission__content">
-            <div className="mission__card mission__card--primary">
-              <div className="mission__icon">🎯</div>
-              <h3 className="mission__card-title">Vision</h3>
-              <p className="mission__card-text">
-                To create a world where every household effortlessly manages resources, 
-                reduces waste, and contributes to a sustainable future through intelligent, 
-                user-friendly technology.
-              </p>
-            </div>
-            
-            <div className="mission__card mission__card--secondary">
-              <div className="mission__icon">💡</div>
-              <h3 className="mission__card-title">Approach</h3>
-              <p className="mission__card-text">
-                We blend cutting-edge AI, intuitive design, and sustainable practices to 
-                develop solutions that adapt to users' needs while minimizing environmental 
-                impact at every step.
-              </p>
-            </div>
-            
-            <div className="mission__card mission__card--accent">
-              <div className="mission__icon">🚀</div>
-              <h3 className="mission__card-title">Impact</h3>
-              <p className="mission__card-text">
-                Every feature we build, every line of code we write, is designed to create 
-                measurable positive change—for families, communities, and our planet.
-              </p>
-            </div>
-          </div>
-          
-          <div className="mission__cta">
-            <h3 className="mission__cta-title">Ready to Experience Our Work?</h3>
-            <p className="mission__cta-text">
-              Explore our innovative services and discover how we're transforming sustainable living.
-            </p>
-            <button onClick={openHouseholdChaos} className="mission__cta-button">
-              <span>Discover Our Services</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </button>
+
+          <div className="team-grid">
+            {teamMembers.map(renderTeamMember)}
           </div>
         </div>
       </section>
 
-      {/* Values Section (using mission cards styling for consistency) */}
-      <section className="header-mission" id="values">
-        <div className="mission__container">
-          <div className="section__header">
-            <div className="section__badge">Core Values</div>
-            <h2 className="section__title">What Drives Us</h2>
-          </div>
-          
-          <div className="mission__content">
-            <div className="mission__card mission__card--primary">
-              <div className="mission__icon">🌟</div>
-              <h3 className="mission__card-title">Innovation First</h3>
-              <p className="mission__card-text">
-                We push boundaries, challenge conventions, and constantly seek better ways 
-                to solve complex problems.
+      {/* Project Section */}
+      <section className="project fade-in-section" id="project" ref={projectRef}>
+        <div className="container">
+          <div className="project-content">
+            <div className="project-info">
+              <div className="mission-header">
+                <span className="mission-icon">🎯</span>
+                <h2 className="project-title">
+                  Our <span className="highlight">Mission</span>
+                </h2>
+              </div>
+
+              <p className="project-description">
+                Revolutionizing household management through intelligent automation
+                and seamless organization systems that adapt to your family's unique rhythm and lifestyle.
               </p>
+
+              <div className="project-visual-mobile">
+                <div className="home-visual">
+                  <span className="main-icon">🏡</span>
+                  <div className="floating-elements">
+                    <div className="floating-element element-1">📱</div>
+                    <div className="floating-element element-2">⚡</div>
+                    <div className="floating-element element-3">🔧</div>
+                    <div className="floating-element element-4">💡</div>
+                  </div>
+                </div>
+              </div>
+
+              <button 
+                onClick={openHouseholdChaos} 
+                className="experience-btn-large"
+                aria-label="Experience Home Harmony"
+              >
+                <span className="experience-icon">✨</span>
+                Experience Home Harmony
+              </button>
             </div>
-            
-            <div className="mission__card mission__card--secondary">
-              <div className="mission__icon">👤</div>
-              <h3 className="mission__card-title">User-Centric</h3>
-              <p className="mission__card-text">
-                Every decision starts with the user. We create experiences that are intuitive, 
-                accessible, and genuinely helpful.
-              </p>
+
+            <div className="project-visual">
+              <div className="home-visual">
+                <span className="main-icon">🏡</span>
+                <div className="floating-elements">
+                  <div className="floating-element element-1">📱</div>
+                  <div className="floating-element element-2">⚡</div>
+                  <div className="floating-element element-3">🔧</div>
+                  <div className="floating-element element-4">💡</div>
+                  <div className="floating-element element-5">🎯</div>
+                  <div className="floating-element element-6">✨</div>
+                </div>
+                <div className="visual-glow"></div>
+                <div className="pulse-ring"></div>
+                <div className="pulse-ring pulse-ring-delay"></div>
+              </div>
             </div>
-            
-            <div className="mission__card mission__card--accent">
-              <div className="mission__icon">🌿</div>
-              <h3 className="mission__card-title">Sustainability</h3>
-              <p className="mission__card-text">
-                Environmental responsibility isn't an afterthought—it's woven into the fabric 
-                of everything we build.
-              </p>
-            </div>
-            
-            <div className="mission__card" style={{ borderTop: '4px solid var(--gray-700)'}}>
-              <div className="mission__icon">💎</div>
-              <h3 className="mission__card-title">Excellence</h3>
-              <p className="mission__card-text">
-                We set high standards and hold ourselves accountable. Good enough never is—we 
-                strive for exceptional.
-              </p>
-            </div>
-          </div>
-          
-          <div className="mission__cta">
-            <h3 className="mission__cta-title">Ready to Experience Our Work?</h3>
-            <p className="mission__cta-text">
-              Explore our innovative services and discover how we're transforming sustainable living.
-            </p>
-            <button onClick={openHouseholdChaos} className="mission__cta-button">
-              <span>Discover Our Services</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </button>
           </div>
         </div>
       </section>
 
-      {/* Footer - Using classes defined in Header.css Footer section */}
-      <footer className="header-footer">
-        <div className="footer__container">
-          <div className="footer__content">
-            <div className="footer__brand">
-              <div className="footer__logo">
-                <span className="footer__logo-icon">🏡</span>
-                <span className="footer__logo-text">Home Harmony</span>
-              </div>
-              <p className="footer__tagline">
-                Empowering sustainable living through intelligent innovation.
-              </p>
-            </div>
-            
-            <div className="footer__links">
-              <div className="footer__section">
-                <h4 className="footer__title">Team</h4>
-                <ul className="footer__list">
-                  <li><button onClick={() => scrollToSection('team')}>Meet the Team</button></li>
-                  <li><button onClick={() => scrollToSection('mission')}>Our Mission</button></li>
-                  <li><button onClick={() => scrollToSection('values')}>Core Values</button></li>
-                </ul>
-              </div>
-              
-              <div className="footer__section">
-                <h4 className="footer__title">Product</h4>
-                <ul className="footer__list">
-                  <li><button onClick={openHouseholdChaos}>Services</button></li>
-                  <li><button onClick={openHouseholdChaos}>Contact</button></li>
-                </ul>
-              </div>
-            </div>
+      {/* Features Section */}
+      <section className="features fade-in-section" id="features">
+        <div className="container">
+          <div className="section-header">
+            <h2 className="section-title">
+              <span className="section-icon">⚡</span>
+              Core Features
+            </h2>
+            <p className="section-subtitle">Powerful tools for seamless household management</p>
           </div>
-          
-          <div className="footer__bottom">
-            <p className="footer__copyright">© 2025 HomeHarmony. All rights reserved.</p>
-            <p className="footer__credit">Crafted with passion by Team HomeHarmony</p>
+
+          <div className="project-features">
+            {features.map(renderFeatureItem)}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="footer">
+        <div className="footer-container">
+          <div className="footer-content">
+            <div className="footer-brand">
+              <div className="footer-logo">
+                <span className="logo-icon">🏠</span>
+                <span className="logo-text">HomeHarmony</span>
+              </div>
+              <p className="footer-description">Transforming chaos into harmony, one home at a time.</p>
+            </div>
+
+            <nav className="footer-links">
+              <div className="footer-section">
+                <h4>Product</h4>
+                <a href="#features">Features</a>
+                <a href="#project">Solution</a>
+                <button onClick={openHouseholdChaos}>Demo</button>
+              </div>
+              <div className="footer-section">
+                <h4>Team</h4>
+                <a href="#team">Our Team</a>
+                <a href="#project">Mission</a>
+              </div>
+              <div className="footer-section">
+                <h4>Connect</h4>
+                <a href="mailto:contact@homeharmony.com">Contact</a>
+                <a href="#support">Support</a>
+              </div>
+            </nav>
+          </div>
+
+          <div className="footer-bottom">
+            <p>&copy; {new Date().getFullYear()} HomeHarmony. All rights reserved.</p>
+            <div className="footer-social">
+              <a href="#" aria-label="Facebook">📘</a>
+              <a href="#" aria-label="Twitter">🐦</a>
+              <a href="#" aria-label="Instagram">📷</a>
+              <a href="#" aria-label="LinkedIn">💼</a>
+            </div>
           </div>
         </div>
       </footer>
