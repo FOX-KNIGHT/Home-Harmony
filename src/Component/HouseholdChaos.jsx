@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import Footer from './Footer.jsx'; // Import Footer
+import { useNavigate } from 'react-router-dom';
+import Footer from './Footer.jsx';
 import './HouseholdChaos.css';
 
-const HouseholdChaos = ({ 
-  onClose, 
-  onOpenWasteManagement, 
-  onOpenQueue, 
-  onOpenFamilyApp, 
-  onOpenComingSoon,
-  onOpenTeamPage
-}) => {
+const HouseholdChaos = () => {
+  const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
+
+  // ... (useEffect logic remains same)
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 50);
@@ -37,27 +34,24 @@ const HouseholdChaos = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleClose = () => {
-    setIsVisible(false);
-    setTimeout(onClose, 300);
-  };
+  // Removed handleClose as it is no longer needed with router
 
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ 
+      element.scrollIntoView({
         behavior: 'smooth',
         block: 'start'
       });
     }
   };
 
-  const ServiceCard = ({ 
-    title, 
-    description, 
-    onClick, 
+  const ServiceCard = ({
+    title,
+    description,
+    onClick,
     status,
-    icon, 
+    icon,
     color = 'primary',
     features = []
   }) => (
@@ -71,24 +65,24 @@ const HouseholdChaos = ({
           {status === 'Available' ? 'Available' : 'Upcoming'}
         </div>
       </div>
-      
+
       <div className="service-card__content">
         <h3 className="service-card__title">{title}</h3>
         <p className="service-card__description">{description}</p>
-        
+
         <div className="service-card__features">
-            {features.map((tag) => <div key={tag} className="feature-tag">{tag}</div>)}
+          {features.map((tag) => <div key={tag} className="feature-tag">{tag}</div>)}
         </div>
-        
+
         {onClick && (
-          <button 
-            onClick={onClick} 
+          <button
+            onClick={onClick}
             className={`service-card__button service-card__button--${color} ${status !== 'Available' ? 'service-card__button--disabled' : ''}`}
             disabled={status !== 'Available'}
           >
             <span>{status === "Available" ? "Get Started" : "Coming Soon"}</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M7 17l9.2-9.2M17 17V7H7"/>
+              <path d="M7 17l9.2-9.2M17 17V7H7" />
             </svg>
           </button>
         )}
@@ -103,7 +97,7 @@ const HouseholdChaos = ({
       icon: "♻️",
       color: "green",
       status: "Available",
-      onClick: onOpenWasteManagement,
+      onClick: () => navigate('/waste-management'),
       features: ["AI-Powered", "Eco-Tracking", "Smart Sorting"]
     },
     {
@@ -112,7 +106,7 @@ const HouseholdChaos = ({
       icon: "⏳",
       color: "blue",
       status: "Available",
-      onClick: onOpenQueue,
+      onClick: () => navigate('/queue'),
       features: ["Smart Queue", "Real-time", "Optimization"]
     },
     {
@@ -121,7 +115,7 @@ const HouseholdChaos = ({
       icon: "🏠",
       color: "purple",
       status: "Available",
-      onClick: onOpenFamilyApp,
+      onClick: () => navigate('/family'),
       features: ["Family Tasks", "Conflict Solver", "Calendar Sync"]
     },
     {
@@ -129,8 +123,8 @@ const HouseholdChaos = ({
       description: "Intelligent monitoring and leak detection system to track, analyze, and reduce your daily household water usage.",
       icon: "💧",
       color: "cyan", // New color for visual distinction
-      status: "Upcoming",
-      onClick: onOpenComingSoon,
+      status: "Available",
+      onClick: () => navigate('/water-conservation'),
       features: ["Leak Detection", "Smart Metering", "Usage Analysis"]
     },
     {
@@ -138,17 +132,26 @@ const HouseholdChaos = ({
       description: "Harness renewable energy with our premium solar solutions. Professional installation, smart monitoring, and guaranteed savings.",
       icon: "☀️",
       color: "yellow",
-      status: "Upcoming",
-      onClick: onOpenComingSoon,
+      status: "Available",
+      onClick: () => navigate('/solar-install'),
       features: ["Expert Install", "Cost Savings", "Monitoring"]
+    },
+    {
+      title: "Carbon Footprint",
+      description: "Track and analyze your daily carbon usage. Visualize impact and get insights to reduce your footprint.",
+      icon: "👣",
+      color: "orange",
+      status: "Available",
+      onClick: () => navigate('/carbon-footprint'),
+      features: ["CO2 Tracking", "Impact Analysis", "Visual Charts"]
     },
     {
       title: "Smart Home Integration",
       description: "Connect all your eco-systems with intelligent automation, energy optimization, and seamless user experiences.",
       icon: "🏡",
-      color: "orange",
-      status: "Upcoming",
-      onClick: onOpenComingSoon,
+      color: "cyan",
+      status: "Available",
+      onClick: () => navigate('/smart-home'),
       features: ["IoT Connected", "Automation", "Energy Efficient"]
     }
   ];
@@ -182,7 +185,7 @@ const HouseholdChaos = ({
               ))}
             </div>
           </div>
-          
+
           <nav className="header__nav">
             <div className="nav__logo">
               <div className="nav__logo-container">
@@ -193,7 +196,7 @@ const HouseholdChaos = ({
                 </div>
               </div>
             </div>
-            
+
             <ul className="nav__links">
               {[
                 { href: "hero", label: "Home" },
@@ -202,8 +205,8 @@ const HouseholdChaos = ({
                 { href: "contact", label: "Contact" }
               ].map(link => (
                 <li key={link.href}>
-                  <a 
-                    href={`#${link.href}`} 
+                  <a
+                    href={`#${link.href}`}
                     onClick={(e) => {
                       e.preventDefault();
                       scrollToSection(link.href);
@@ -214,14 +217,7 @@ const HouseholdChaos = ({
                   </a>
                 </li>
               ))}
-              <li>
-                <button 
-                  onClick={onOpenTeamPage} 
-                  className="nav__link nav__link--team"
-                >
-                  👥 Team
-                </button>
-              </li>
+
             </ul>
           </nav>
         </header>
@@ -232,23 +228,23 @@ const HouseholdChaos = ({
             <div className="hero__shape hero__shape--2"></div>
             <div className="hero__shape hero__shape--3"></div>
           </div>
-          
+
           <div className="hero__content">
             <div className="hero__badge">
               <span className="badge__icon">✨</span>
               <span>Sustainable Living Solutions</span>
             </div>
-            
+
             <h1 className="hero__title">
               <span className="title__main">Transform Your Home Into</span>
               <span className="title__highlight">Eco Paradise</span>
             </h1>
-            
+
             <p className="hero__description">
-              Experience the future of sustainable living with our comprehensive ecosystem of 
+              Experience the future of sustainable living with our comprehensive ecosystem of
               eco-friendly solutions. From smart waste management to renewable energy systems.
             </p>
-            
+
             <div className="hero__stats">
               <div className="stat">
                 <div className="stat__value">10K+</div>
@@ -263,10 +259,10 @@ const HouseholdChaos = ({
                 <div className="stat__label">Eco-Friendly</div>
               </div>
             </div>
-            
+
             <div className="hero__actions">
-              <button 
-                onClick={() => scrollToSection('services')} 
+              <button
+                onClick={() => scrollToSection('services')}
                 className="hero__cta hero__cta--primary"
               >
                 Explore Services
@@ -275,16 +271,16 @@ const HouseholdChaos = ({
                   <polyline points="7,7 17,7 17,17"></polyline>
                 </svg>
               </button>
-              
-              <button className="hero__cta hero__cta--secondary" onClick={onOpenComingSoon}>
+
+              <button className="hero__cta hero__cta--secondary" onClick={() => scrollToSection('services')}>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <polygon points="5,3 19,12 5,21 5,3"></polygon>
                 </svg>
-                Watch Demo
+                Explore More
               </button>
             </div>
           </div>
-          
+
           <div className="hero__visual">
             <div className="visual__main">
               <div className="visual__globe">
@@ -310,17 +306,17 @@ const HouseholdChaos = ({
               <h2 className="section__title">Building Sustainable Futures</h2>
               <p className="section__subtitle">One home at a time, one solution at a time</p>
             </div>
-            
+
             <div className="about__content">
               <div className="about__text">
                 <div className="about__intro">
                   <p className="about__description">
-                    At Home Harmony, we're pioneering the next generation of sustainable living solutions. 
-                    Our mission extends beyond simple eco-friendliness – we're creating intelligent ecosystems 
+                    At Home Harmony, we're pioneering the next generation of sustainable living solutions.
+                    Our mission extends beyond simple eco-friendliness – we're creating intelligent ecosystems
                     that learn, adapt, and optimize your environmental impact.
                   </p>
                 </div>
-                
+
                 <div className="about__values">
                   <h3 className="values__title">Our Core Principles</h3>
                   <div className="values__grid">
@@ -357,7 +353,7 @@ const HouseholdChaos = ({
                   </div>
                 </div>
               </div>
-              
+
               <div className="about__visual">
                 <div className="about__image">
                   <div className="image__container">
@@ -366,7 +362,7 @@ const HouseholdChaos = ({
                     <div className="image__text">Sustainable Future</div>
                   </div>
                 </div>
-                
+
                 <div className="about__metrics">
                   <div className="metric">
                     <div className="metric__value">95%</div>
@@ -391,7 +387,7 @@ const HouseholdChaos = ({
                 Integrated systems for maximum environmental impact and household efficiency
               </p>
             </div>
-            
+
             <div className="services__grid">
               {serviceCards.map((card, index) => (
                 <ServiceCard key={index} {...card} />
@@ -407,7 +403,7 @@ const HouseholdChaos = ({
               <h2 className="section__title">Ready to Transform Your Home?</h2>
               <p className="section__subtitle">Contact us for a free consultation and personalized eco-plan</p>
             </div>
-            
+
             <div className="contact__content">
               <div className="contact__info">
                 <div className="contact__item">
@@ -431,19 +427,9 @@ const HouseholdChaos = ({
                     <p>Over The Internet</p>
                   </div>
                 </div>
-                <div 
-                  className="contact__item contact__item--team" 
-                  onClick={onOpenTeamPage}
-                >
-                  <div className="contact__icon contact__icon--team">👥</div>
-                  <div className="contact__details">
-                    <h4>Meet The Team</h4>
-                    <p>Discover the innovators behind HomeHarmony</p>
-                  </div>
-                  <div className="contact__arrow">→</div>
-                </div>
+
               </div>
-              
+
               <div className="contact__form">
                 <div className="form__group">
                   <label htmlFor="name" className="form__label">Name</label>
@@ -480,9 +466,9 @@ const HouseholdChaos = ({
             </div>
           </div>
         </section>
-        
+
         {/* Added Footer component here */}
-        <Footer /> 
+        <Footer />
 
       </div>
     </div>

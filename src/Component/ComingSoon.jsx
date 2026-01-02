@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ComingSoon = () => {
+  const navigate = useNavigate();
   const words = ["Innovation", "Excellence", "Future"];
   const [currentWord, setCurrentWord] = useState(0);
   const [displayText, setDisplayText] = useState("");
@@ -42,6 +44,17 @@ const ComingSoon = () => {
 
   return (
     <div style={styles.container}>
+      {/* Navigation */}
+      <button
+        style={styles.backButton}
+        onClick={() => navigate('/')}
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginRight: '0.5rem' }}>
+          <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
+        Back to Home
+      </button>
+
       {/* Animated Background */}
       <div style={styles.background}>
         <div style={styles.gradientOverlay} />
@@ -114,7 +127,7 @@ const ComingSoon = () => {
             <button style={styles.notifyButton}>
               <span>Notify Me</span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
+                <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
             </button>
           </div>
@@ -136,6 +149,22 @@ const styles = {
     fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
     background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)',
     padding: '2rem'
+  },
+  backButton: {
+    position: 'absolute',
+    top: '2rem',
+    left: '2rem',
+    zIndex: 10,
+    background: 'rgba(255, 255, 255, 0.05)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    color: '#cbd5e1',
+    padding: '0.75rem 1.25rem',
+    borderRadius: '0.5rem',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    transition: 'all 0.3s ease',
+    backdropFilter: 'blur(10px)',
   },
   background: {
     position: 'absolute',

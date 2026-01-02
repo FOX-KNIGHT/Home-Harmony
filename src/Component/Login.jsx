@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { GoogleLogin } from '@react-oauth/google';
 import './Login.css';
+import { API_BASE_URL } from '../constants';
 
 function Login() {
   const [form, setForm] = useState({ name: '', email: '' });
@@ -13,25 +14,25 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-    const response = await fetch('http://localhost:5001/api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(form),
-    });
+      const response = await fetch(`${API_BASE_URL}/api/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (response.ok) {
-      setMessage(`Welcome ${form.name}, logged in successfully!`);
-      // Optional: Save user info to context/localStorage
-    } else {
-      setMessage(data.error || 'Login failed on server.');
+      if (response.ok) {
+        setMessage(`Welcome ${form.name}, logged in successfully!`);
+        // Optional: Save user info to context/localStorage
+      } else {
+        setMessage(data.error || 'Login failed on server.');
+      }
+    } catch (error) {
+      setMessage('Network error during login.');
     }
-  } catch (error) {
-    setMessage('Network error during login.');
-  }
 
     // Your existing POST request logic here...
   };
@@ -39,7 +40,7 @@ function Login() {
   const handleGoogleSuccess = async (credentialResponse) => {
     console.log('Google credential:', credentialResponse.credential);
     try {
-      const response = await fetch('http://localhost:5001/api/google-login', {
+      const response = await fetch(`${API_BASE_URL}/api/google-login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token: credentialResponse.credential }),

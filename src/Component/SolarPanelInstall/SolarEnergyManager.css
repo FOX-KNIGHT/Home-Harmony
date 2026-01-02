@@ -9,13 +9,17 @@
 
 :root {
   /* Solar Theme Colors - Based on yellow/green accents */
-  --solar-50: #fef9e7; /* Very light yellow */
+  --solar-50: #fef9e7;
+  /* Very light yellow */
   --solar-100: #fdf6d9;
-  --solar-primary: #d97706; /* Orange/Yellow Dark */
+  --solar-primary: #d97706;
+  /* Orange/Yellow Dark */
   --solar-primary-dark: #b45309;
-  --solar-accent: #16a34a; /* Green from HouseholdChaos */
-  
-  --secondary-500: #3b82f6; /* Blue for contrast */
+  --solar-accent: #16a34a;
+  /* Green from HouseholdChaos */
+
+  --secondary-500: #3b82f6;
+  /* Blue for contrast */
 
   /* General UI Colors */
   --background: var(--solar-50);
@@ -25,7 +29,7 @@
   --text-primary: #171717;
   --text-secondary: #525252;
   --text-muted: #a3a3a3;
-  
+
   /* Inherited Utilities */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
@@ -63,7 +67,7 @@ body {
   .desktop-layout {
     display: none;
   }
-  
+
   .mobile-layout {
     display: flex;
   }
@@ -228,78 +232,82 @@ body {
 
 .solar-btn--close {
   width: 100%;
-  background: #ef4444; /* Red accent for closing */
+  background: #ef4444;
+  /* Red accent for closing */
   color: white;
 }
 
 
-/* --- Dashboard (Home) Page Styles --- */
+/* --- Dashboard (Home) Page/* Metrics Grid */
 .metrics-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 1.5rem;
   margin-bottom: 2rem;
 }
 
 .metric-card {
-  position: relative;
-  overflow: hidden;
-  text-align: left;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.metric-card--primary { border-top: 3px solid var(--solar-primary); }
-.metric-card--secondary { border-top: 3px solid var(--solar-accent); }
-.metric-card--accent { border-top: 3px solid #f97316; } /* Using a different orange for contrast */
-.metric-card--info { border-top: 3px solid var(--secondary-500); } 
+.metric-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
 
 .metric-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 1rem;
+  color: var(--text-secondary);
 }
 
 .metric-title {
   font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--text-secondary);
   text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
 }
 
 .metric-value {
   font-size: 2rem;
-  font-weight: 800;
-  color: var(--solar-primary);
-  margin-bottom: 0.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
 }
-.metric-card--secondary .metric-value { color: var(--solar-accent); }
-.metric-card--accent .metric-value { color: #f97316; }
-.metric-card--info .metric-value { color: var(--secondary-500); }
-
 
 .metric-subtitle {
-  font-size: 0.875rem;
-  color: var(--text-muted);
+  font-size: 0.75rem;
+  color: var(--success);
 }
 
-.chart-placeholder {
-  min-height: 300px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+/* Metric Colors */
+.metric-card--primary {
+  border-top: 4px solid var(--primary-500);
 }
 
-.chart-content {
+.metric-card--secondary {
+  border-top: 4px solid var(--secondary-500);
+}
+
+.metric-card--accent {
+  border-top: 4px solid var(--accent-500);
+}
+
+.metric-card--info {
+  border-top: 4px solid var(--info);
   color: var(--text-muted);
 }
 
 .action-grid {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin-top: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
 }
 
 /* --- Analytics (Calculator) Page Styles --- */
@@ -310,47 +318,49 @@ body {
 }
 
 .input-group {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .input-group label {
-    display: block;
-    font-size: 0.875rem;
-    font-weight: 600;
-    margin-bottom: 0.4rem;
-    color: var(--text-primary);
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: var(--text-primary);
 }
 
 .input-group input[type="number"] {
-    width: 100%;
-    padding: 0.6rem;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    background: var(--surface);
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
 }
 
 .calculate-btn {
-    margin-top: 1.5rem;
-    width: 100%;
+  margin-top: 1.5rem;
+  width: 100%;
 }
 
 .analytics-sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .results-metrics {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
 }
+
 .mini-card {
-    padding: 1rem;
-    text-align: center;
+  padding: 1rem;
+  text-align: center;
 }
+
 .mini-card .metric-value {
-    font-size: 1.5rem;
+  font-size: 1.5rem;
 }
 
 
@@ -485,7 +495,7 @@ body {
 }
 
 .classifier-upload {
-    text-align: center;
+  text-align: center;
 }
 
 .upload-zone {
@@ -539,18 +549,19 @@ body {
 }
 
 .mobile-nav-item {
-    background: none;
-    border: none;
-    color: var(--text-muted);
-    transition: var(--transition-fast);
-    padding: 0.5rem;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  transition: var(--transition-fast);
+  padding: 0.5rem;
 }
 
 .mobile-nav-item--active {
-    color: var(--solar-primary);
+  color: var(--solar-primary);
 }
 
 @media (max-width: 1024px) {
+
   .analytics-layout,
   .booking-layout,
   .reports-layout {

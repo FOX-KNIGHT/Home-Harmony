@@ -1,332 +1,149 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './Component/Header.jsx';
 import Login from './Component/Login.jsx';
-import Wastemanage from './Component/wastemanage.jsx';
+import WasteManage from './Component/WasteManage.jsx';
 import HouseholdChaos from './Component/HouseholdChaos.jsx';
-import Queue from './Component/Queue/QueueApp.jsx';
-import FamilyApp from './Component/family/FamilyApp.jsx';
+import QueueLayout from './Component/Queue/QueueLayout';
+import QueueDashboard from './Component/Queue/Dashboard';
+import JoinQueue from './Component/Queue/JoinQueue.jsx';
+import QueueHistory from './Component/Queue/History.jsx';
+import FamilyLayout from './Component/family/FamilyLayout';
+import FamilyDashboard from './Component/family/Dashboard';
+import TasksPage from './Component/family/pages/TasksPage';
+import Shopping from './Component/family/components/Shopping';
+import CalendarView from './Component/family/components/CalendarView';
+import Conflicts from './Component/family/components/Conflicts';
+import PeopleResources from './Component/family/components/PeopleResources';
 import ComingSoon from './Component/ComingSoon.jsx';
-import SolarEnergyManager from './Component/SolarPanelInstall/SolarEnergyManager.jsx'; // NEW IMPORT
+import SolarLayout from './Component/SolarPanelInstall/SolarLayout';
+import SolarDashboard from './Component/SolarPanelInstall/Dashboard';
+import SolarAnalytics from './Component/SolarPanelInstall/Analytics';
+import SolarSchedule from './Component/SolarPanelInstall/Schedule';
+import SolarAIDesign from './Component/SolarPanelInstall/AIDesign';
+import SolarSettings from './Component/SolarPanelInstall/Settings';
+
+import CarbonFootprintPage from './Component/CarbonFootprintPage.jsx';
+import WaterConservation from './Component/WaterConservation/index.jsx';
+import SmartHome from './Component/SmartHome/index.jsx';
+import Team from './Component/Team.jsx';
+import PageLayout from './Component/PageLayout.jsx';
+import { GOOGLE_CLIENT_ID } from './constants';
+import Dashboard from './Component/WasteManagement/Dashboard.jsx';
+import Booking from './Component/WasteManagement/Booking.jsx';
+import Analytics from './Component/WasteManagement/Analytics.jsx';
+import Reports from './Component/WasteManagement/Reports.jsx';
+import WasteClassifier from './Component/WasteManagement/WasteClassifier.jsx';
+import Profile from './Component/WasteManagement/Profile.jsx';
+import Admin from './Component/WasteManagement/Admin.jsx';
 import './App.css';
 
-const clientId = '833368854512-s1er4vbhs3rromaj8j1mpvcdf5us549l.apps.googleusercontent.com';
-
 function App() {
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [isHouseholdChaosOpen, setIsHouseholdChaosOpen] = useState(true); // Changed to true
-  const [isHeaderOpen, setIsHeaderOpen] = useState(false); // New state for Header
-  const [isWasteManagementOpen, setIsWasteManagementOpen] = useState(false);
-  const [isQueueOpen, setIsQueueOpen] = useState(false);
-  const [isFamilyAppOpen, setIsFamilyAppOpen] = useState(false);
-  const [isComingSoonOpen, setIsComingSoonOpen] = useState(false);
-  const [isSolarInstallOpen, setIsSolarInstallOpen] = useState(false); // NEW STATE
-
-  const openLogin = () => setIsLoginOpen(true);
-  const closeLogin = () => setIsLoginOpen(false);
-
-  const openHouseholdChaos = () => {
-    setIsHouseholdChaosOpen(true);
-    setIsHeaderOpen(false);
-    document.body.style.overflow = 'hidden';
-  };
-
-  const closeHouseholdChaos = () => {
-    setIsHouseholdChaosOpen(false);
-    document.body.style.overflow = 'unset';
-  };
-
-  // New function to open Team page (Header)
-  const openTeamPage = () => {
-    setIsHouseholdChaosOpen(false);
-    setIsWasteManagementOpen(false);
-    setIsQueueOpen(false);
-    setIsFamilyAppOpen(false);
-    setIsComingSoonOpen(false);
-    setIsSolarInstallOpen(false); // NEW
-    setIsHeaderOpen(true);
-    document.body.style.overflow = 'hidden';
-  };
-
-  const closeTeamPage = () => {
-    setIsHeaderOpen(false);
-    document.body.style.overflow = 'unset';
-  };
-
-  // Back to Household Chaos functions
-  const backToHouseholdChaos = () => {
-    setIsWasteManagementOpen(false);
-    setIsQueueOpen(false);
-    setIsFamilyAppOpen(false);
-    setIsComingSoonOpen(false);
-    setIsHeaderOpen(false);
-    setIsSolarInstallOpen(false); // NEW
-    setIsHouseholdChaosOpen(true);
-    document.body.style.overflow = 'hidden';
-  };
-
-  const openComingSoon = () => {
-    setIsHouseholdChaosOpen(false);
-    setIsComingSoonOpen(true);
-    document.body.style.overflow = 'hidden';
-  };
-
-  const closeComingSoon = () => {
-    setIsComingSoonOpen(false);
-    document.body.style.overflow = 'unset';
-  };
-
-  const openWasteManagement = () => {
-    setIsHouseholdChaosOpen(false);
-    setIsWasteManagementOpen(true);
-    document.body.style.overflow = 'hidden';
-  };
-
-  const closeWasteManagement = () => {
-    setIsWasteManagementOpen(false);
-    document.body.style.overflow = 'unset';
-  };
-
-  const openQueue = () => {
-    setIsHouseholdChaosOpen(false);
-    setIsQueueOpen(true);
-    document.body.style.overflow = 'hidden';
-  };
-
-  const closeQueue = () => {
-    setIsQueueOpen(false);
-    document.body.style.overflow = 'unset';
-  };
-
-  const openFamilyApp = () => {
-    setIsHouseholdChaosOpen(false);
-    setIsFamilyAppOpen(true);
-    document.body.style.overflow = 'hidden';
-  };
-
-  const closeFamilyApp = () => {
-    setIsFamilyAppOpen(false);
-    document.body.style.overflow = 'unset';
-  };
-  
-  // NEW: Solar Install Open/Close
-  const openSolarInstall = () => {
-    setIsHouseholdChaosOpen(false);
-    setIsSolarInstallOpen(true);
-    document.body.style.overflow = 'hidden';
-  };
-
-  const closeSolarInstall = () => {
-    setIsSolarInstallOpen(false);
-    document.body.style.overflow = 'unset';
-  };
-
-
   return (
-    <GoogleOAuthProvider clientId={clientId}>
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
       <Router>
         <div className="App">
-          {/* Login Modal */}
-          {isLoginOpen && (
-            <div className="login-overlay" onClick={closeLogin}>
-              <div className="login-container" onClick={(e) => e.stopPropagation()}>
-                <button className="close-button" onClick={closeLogin}>
-                  Close
-                </button>
-                <Login />
+          <Routes>
+            {/* Home Route */}
+            <Route path="/" element={<HouseholdChaos />} />
+
+            {/* Login Route - Modal style or separate page? keeping separate for now or overlay? 
+                Actually, Login was an overlay. We can make it a route or keep it as a component used elsewhere.
+                The prompt asked for Login Route. Let's make it a route for now, or keep it in HouseholdChaos if it's just a modal.
+                Re-reading plan: "/login -> Login".
+             */}
+            <Route path="/login" element={
+              <div className="login-overlay">
+                <div className="login-container">
+                  <Login />
+                </div>
               </div>
-            </div>
-          )}
+            } />
 
-          {/* Full Screen HouseholdChaos (Updated Props) */}
-          {isHouseholdChaosOpen && (
-            <div className="fullscreen-modal">
-              <HouseholdChaos
-                onClose={closeHouseholdChaos}
-                onOpenWasteManagement={openWasteManagement}
-                onOpenQueue={openQueue}
-                onOpenFamilyApp={openFamilyApp}
-                onOpenComingSoon={openComingSoon}
-                onOpenTeamPage={openTeamPage}
-                onOpenSolarInstall={openSolarInstall} // NEW PROP
-              />
-            </div>
-          )}
+            {/* Feature Routes wrapped in PageLayout */}
+            <Route path="/waste-management" element={
+              <PageLayout className="waste-management-modal">
+                <WasteManage />
+              </PageLayout>
+            }>
+              <Route index element={<Dashboard />} />
+              <Route path="booking" element={<Booking />} />
+              <Route path="analytics" element={<Analytics />} />
+              <Route path="reports" element={<Reports />} />
+              <Route path="waste-classifier" element={<WasteClassifier />} />
+              <Route path="profile" element={<Profile />} />
+              <Route path="admin" element={<Admin />} />
+            </Route>
 
-          {/* Full Screen Team Page (Header) */}
-          {isHeaderOpen && (
-            <div className="fullscreen-modal team-page-modal">
-              <button
-                className="fullscreen-back-btn team-back-btn"
-                onClick={backToHouseholdChaos}
-                title="Back to Home Harmony"
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M19 12H6m0 0l6 6m-6-6l6-6"/>
-                </svg>
-                <span>Back to Home</span>
-              </button>
-              <button
-                className="fullscreen-close-btn team-close-btn"
-                onClick={closeTeamPage}
-                title="Close"
-              >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-              </button>
-              <div className="team-page-container">
-                <Header openHouseholdChaos={openHouseholdChaos} />
-              </div>
-            </div>
-          )}
+            <Route path="/queue" element={
+              <PageLayout className="queue-modal">
+                <QueueLayout />
+              </PageLayout>
+            }>
+              <Route index element={<QueueDashboard />} />
+              <Route path="join" element={<JoinQueue />} />
+              <Route path="history" element={<QueueHistory />} />
+            </Route>
 
-          {/* Full Screen Solar Installation Manager (NEW MODAL) */}
-          {isSolarInstallOpen && (
-            <div className="fullscreen-modal solar-install-modal">
-              <button
-                className="fullscreen-back-btn solar-install-back-btn"
-                onClick={backToHouseholdChaos}
-                title="Back to Home Harmony"
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M19 12H6m0 0l6 6m-6-6l6-6"/>
-                </svg>
-                <span>Back to Services</span>
-              </button>
-              <button
-                className="fullscreen-close-btn solar-install-close-btn"
-                onClick={closeSolarInstall}
-                title="Close"
-              >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-              </button>
-              <div className="solar-install-container">
-                <SolarEnergyManager onClose={backToHouseholdChaos} />
-              </div>
-            </div>
-          )}
+            <Route path="/family" element={
+              <PageLayout className="familyapp-modal">
+                <FamilyLayout />
+              </PageLayout>
+            }>
+              <Route index element={<FamilyDashboard />} />
+              <Route path="tasks" element={<TasksPage />} />
+              <Route path="shopping" element={<div className="p-4"><Shopping /></div>} />
+              <Route path="calendar" element={<div className="p-4"><CalendarView /></div>} />
+              <Route path="conflicts" element={<div className="p-4"><Conflicts /></div>} />
+              <Route path="people" element={<div className="p-4"><PeopleResources /></div>} />
+            </Route>
 
-          {/* Full Screen ComingSoon with Back to Household */}
-          {isComingSoonOpen && (
-            <div className="fullscreen-modal coming-soon-modal">
-              <button
-                className="fullscreen-back-btn coming-soon-back-btn"
-                onClick={backToHouseholdChaos}
-                title="Back to Home Harmony"
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M19 12H6m0 0l6 6m-6-6l6-6"/>
-                </svg>
-                <span>Back to Services</span>
-              </button>
-              <button
-                className="fullscreen-close-btn coming-soon-close-btn"
-                onClick={closeComingSoon}
-                title="Close"
-              >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-              </button>
-              <div className="coming-soon-container">
+            <Route path="/solar-install" element={
+              <PageLayout className="solar-install-modal">
+                <SolarLayout />
+              </PageLayout>
+            }>
+              <Route index element={<SolarDashboard />} />
+              <Route path="analytics" element={<SolarAnalytics />} />
+              <Route path="schedule" element={<SolarSchedule />} />
+              <Route path="ai-design" element={<SolarAIDesign />} />
+              <Route path="settings" element={<SolarSettings />} />
+            </Route>
+
+            <Route path="/coming-soon" element={
+              <PageLayout className="coming-soon-modal">
                 <ComingSoon />
-              </div>
-            </div>
-          )}
+              </PageLayout>
+            } />
 
-          {/* Full Screen Queue with Back to Household */}
-          {isQueueOpen && (
-            <div className="fullscreen-modal queue-modal">
-              <button
-                className="fullscreen-back-btn queue-back-btn"
-                onClick={backToHouseholdChaos}
-                title="Back to Home Harmony"
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M19 12H6m0 0l6 6m-6-6l6-6"/>
-                </svg>
-                <span>Back to Services</span>
-              </button>
-              <button
-                className="fullscreen-close-btn queue-close-btn"
-                onClick={closeQueue}
-                title="Close"
-              >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-              </button>
-              <div className="queue-container">
-                <Queue />
-              </div>
-            </div>
-          )}
+            <Route path="/water-conservation" element={
+              <PageLayout className="water-conservation-modal">
+                <WaterConservation />
+              </PageLayout>
+            } />
 
-          {/* Full Screen FamilyApp with Back to Household */}
-          {isFamilyAppOpen && (
-            <div className="fullscreen-modal familyapp-modal">
-              <button
-                className="fullscreen-back-btn familyapp-back-btn"
-                onClick={backToHouseholdChaos}
-                title="Back to Home Harmony"
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M19 12H6m0 0l6 6m-6-6l6-6"/>
-                </svg>
-                <span>Back to Services</span>
-              </button>
-              <button
-                className="fullscreen-close-btn familyapp-close-btn"
-                onClick={closeFamilyApp}
-                title="Close"
-              >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-              </button>
-              <div className="familyapp-container">
-                <FamilyApp />
-              </div>
-            </div>
-          )}
+            <Route path="/smart-home" element={
+              <PageLayout className="smart-home-modal">
+                <SmartHome />
+              </PageLayout>
+            } />
 
-          {/* Full Screen Waste Management with Back to Household */}
-          {isWasteManagementOpen && (
-            <div className="fullscreen-modal waste-management-modal">
-              <button
-                className="fullscreen-back-btn waste-back-btn"
-                onClick={backToHouseholdChaos}
-                title="Back to Home Harmony"
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M19 12H6m0 0l6 6m-6-6l6-6"/>
-                </svg>
-                <span>Back to Services</span>
-              </button>
-              <button
-                className="fullscreen-close-btn waste-close-btn"
-                onClick={closeWasteManagement}
-                title="Close"
-              >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-              </button>
-              <div className="waste-management-container">
-                <Wastemanage />
-              </div>
-            </div>
-          )}
+            <Route path="/carbon-footprint" element={
+              <PageLayout className="carbon-footprint-modal">
+                <CarbonFootprintPage />
+              </PageLayout>
+            } />
+
+            <Route path="/team" element={
+              <PageLayout className="team-page-modal" backLabel="Back to Home">
+                <Team />
+              </PageLayout>
+            } />
+
+            {/* Fallback */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
         </div>
       </Router>
     </GoogleOAuthProvider>

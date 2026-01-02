@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Header.css';
 
 // Import team photos (you'll need to add these to your project)
@@ -8,7 +9,9 @@ const Siddhantpic = '/api/placeholder/150/150';
 const Shlokpic = '/api/placeholder/150/150';
 const Mithileshpic = '/api/placeholder/150/150';
 
-const Header = ({ openHouseholdChaos = () => console.log('Opening Household Chaos...') }) => {
+const Header = () => {
+  const navigate = useNavigate();
+  const openHouseholdChaos = () => navigate('/');
   const [statsAnimated, setStatsAnimated] = useState(false);
   const [showInitialAnimation, setShowInitialAnimation] = useState(true);
   const [scrollDirection, setScrollDirection] = useState('up');
@@ -16,7 +19,7 @@ const Header = ({ openHouseholdChaos = () => console.log('Opening Household Chao
   const [isNavVisible, setIsNavVisible] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
-  
+
   const navRef = useRef(null);
   const statsRef = useRef(null);
   const projectRef = useRef(null);
@@ -169,24 +172,24 @@ const Header = ({ openHouseholdChaos = () => console.log('Opening Household Chao
     e.preventDefault();
     const href = e.currentTarget.getAttribute('href');
     const target = document.querySelector(href);
-    
+
     if (target) {
       const navHeight = navRef.current?.offsetHeight || 80;
       const targetPosition = target.offsetTop - navHeight;
-      
+
       window.scrollTo({
         top: targetPosition,
         behavior: 'smooth'
       });
     }
-    
+
     closeMobileMenu();
   }, [closeMobileMenu]);
 
   // Stats animation
   const animateStats = useCallback(() => {
     const statNumbers = document.querySelectorAll('.stat-number');
-    
+
     statNumbers.forEach((stat, index) => {
       const finalNumber = parseInt(stat.dataset.number);
       const suffix = stat.dataset.suffix || '';
@@ -213,7 +216,7 @@ const Header = ({ openHouseholdChaos = () => console.log('Opening Household Chao
   // Feature animation
   const animateFeatures = useCallback(() => {
     const featureItems = document.querySelectorAll('.project-features .feature-item');
-    
+
     featureItems.forEach((feature, index) => {
       setTimeout(() => {
         feature.classList.add('animate-in');
@@ -228,7 +231,7 @@ const Header = ({ openHouseholdChaos = () => console.log('Opening Household Chao
 
     const shapes = ['circle', 'square', 'triangle'];
     const colors = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe'];
-    
+
     const randomColor = colors[Math.floor(Math.random() * colors.length)];
     const randomShape = shapes[Math.floor(Math.random() * shapes.length)];
 
@@ -337,7 +340,7 @@ const Header = ({ openHouseholdChaos = () => console.log('Opening Household Chao
 
     return () => {
       clearTimeout(loadingTimer);
-      
+
       anchorLinks.forEach(anchor => {
         anchor.removeEventListener('click', handleAnchorClick);
       });
@@ -420,9 +423,9 @@ const Header = ({ openHouseholdChaos = () => console.log('Opening Household Chao
               <span className="logo-icon">🏠</span>
               <span className="logo-text">HomeHarmony</span>
             </div>
-            
+
             {/* Mobile Menu Button */}
-            <button 
+            <button
               className={`mobile-menu-btn ${isMobileMenuOpen ? 'active' : ''}`}
               onClick={toggleMobileMenu}
               aria-label="Toggle mobile menu"
@@ -435,12 +438,12 @@ const Header = ({ openHouseholdChaos = () => console.log('Opening Household Chao
             {/* Navigation Links */}
             <ul className={`nav-links ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
               <li><a href="#home" className={`nav-link ${activeSection === 'home' ? 'active' : ''}`}>Home</a></li>
-              <li><a href="#team" className={`nav-link ${activeSection === 'team' ? 'active' : ''}`}>Team</a></li>
+
               <li><a href="#project" className={`nav-link ${activeSection === 'project' ? 'active' : ''}`}>Solution</a></li>
               <li><a href="#features" className={`nav-link ${activeSection === 'features' ? 'active' : ''}`}>Features</a></li>
               <li>
-                <button 
-                  onClick={() => { openHouseholdChaos(); closeMobileMenu(); }} 
+                <button
+                  onClick={() => { openHouseholdChaos(); closeMobileMenu(); }}
                   className="experience-btn"
                   aria-label="Experience HomeHarmony"
                 >
@@ -481,7 +484,7 @@ const Header = ({ openHouseholdChaos = () => console.log('Opening Household Chao
               to organize, manage, and optimize their daily routines.
             </p>
             <div className="hero-actions">
-              <a href="#team" className="cta-btn primary">
+              <a href="#project" className="cta-btn primary">
                 <span>Discover Our Vision</span>
                 <i className="btn-arrow">→</i>
               </a>
@@ -499,8 +502,8 @@ const Header = ({ openHouseholdChaos = () => console.log('Opening Household Chao
           <div className="stats-grid">
             {stats.map((stat, index) => (
               <div key={index} className="stat-item">
-                <div 
-                  className="stat-number" 
+                <div
+                  className="stat-number"
                   data-number={stat.number}
                   data-suffix={stat.suffix}
                 >
@@ -513,22 +516,7 @@ const Header = ({ openHouseholdChaos = () => console.log('Opening Household Chao
         </div>
       </section>
 
-      {/* Team Section */}
-      <section className="team fade-in-section" id="team">
-        <div className="container">
-          <div className="section-header">
-            <h2 className="section-title">
-              <span className="section-icon">🌟</span>
-              Meet Team HomeHarmony
-            </h2>
-            <p className="section-subtitle">Five innovative minds, one harmonious vision</p>
-          </div>
-
-          <div className="team-grid">
-            {teamMembers.map(renderTeamMember)}
-          </div>
-        </div>
-      </section>
+      {/* Team Section Removed */}
 
       {/* Project Section */}
       <section className="project fade-in-section" id="project" ref={projectRef}>
@@ -559,8 +547,8 @@ const Header = ({ openHouseholdChaos = () => console.log('Opening Household Chao
                 </div>
               </div>
 
-              <button 
-                onClick={openHouseholdChaos} 
+              <button
+                onClick={openHouseholdChaos}
                 className="experience-btn-large"
                 aria-label="Experience Home Harmony"
               >
@@ -626,9 +614,9 @@ const Header = ({ openHouseholdChaos = () => console.log('Opening Household Chao
                 <button onClick={openHouseholdChaos}>Demo</button>
               </div>
               <div className="footer-section">
-                <h4>Team</h4>
-                <a href="#team">Our Team</a>
+                <h4>Company</h4>
                 <a href="#project">Mission</a>
+                <a href="#home">About</a>
               </div>
               <div className="footer-section">
                 <h4>Connect</h4>
