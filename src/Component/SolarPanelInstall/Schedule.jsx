@@ -50,83 +50,133 @@ const Schedule = () => {
     };
 
     return (
-        <div className="page-container">
-            <div className="page-header">
-                <h1 className="page-title">Smart Installation Scheduling</h1>
-                <p className="page-subtitle">Book your free home solar assessment appointment.</p>
+        <div className="min-h-screen p-6 md:p-8 max-w-7xl mx-auto space-y-8">
+            <div className="space-y-2">
+                <h1 className="text-4xl font-bold bg-gradient-to-r from-sky-400 to-violet-400 bg-clip-text text-transparent">Smart Installation Scheduling</h1>
+                <p className="text-slate-400 text-lg">Book your free home solar assessment appointment.</p>
             </div>
 
-            <div className="booking-layout" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
-                <Card className="booking-calendar">
-                    <h3 className="card-title">Select Date & Time</h3>
-                    <div className="calendar-placeholder" style={{ background: 'rgba(255,255,255,0.05)', height: '200px', borderRadius: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '1rem 0' }}>
-                        <div className="calendar-grid">
-                            <div className="calendar-month" style={{ fontWeight: 'bold' }}>October 2025</div>
-                            <p className="text-sm text-slate-400">Interactive Calendar View</p>
-                        </div>
+            {bookingStatus === 'success' ? (
+                <Card className="flex flex-col items-center justify-center p-12 text-center space-y-4 border-emerald-500/30 bg-emerald-500/10">
+                    <div className="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center text-3xl shadow-lg shadow-emerald-900/20">
+                        ✅
                     </div>
-                    <div className="time-slots">
-                        <h4 className="slots-title" style={{ marginBottom: '1rem', fontSize: '0.9rem', color: '#94a3b8' }}>Available Assessment Slots</h4>
-                        {loading ? (
-                            <p>Loading slots...</p>
-                        ) : (
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                                {slots.map(slot => (
-                                    <label key={slot.id} className="time-slot" style={{
-                                        display: 'flex', alignItems: 'center', padding: '0.75rem',
-                                        background: selectedSlot === slot.id ? 'rgba(34, 197, 94, 0.1)' : 'rgba(255,255,255,0.03)',
-                                        borderRadius: '0.5rem', cursor: 'pointer',
-                                        border: selectedSlot === slot.id ? '1px solid #22c55e' : '1px solid transparent'
-                                    }}>
-                                        <input
-                                            type="radio"
-                                            name="timeSlot"
-                                            value={slot.id}
-                                            checked={selectedSlot === slot.id}
-                                            onChange={() => setSelectedSlot(slot.id)}
-                                            style={{ marginRight: '1rem' }}
-                                        />
-                                        <span className="slot-text" style={{ flex: 1 }}>{slot.dateTime}</span>
-                                        <span className="slot-badge" style={{ fontSize: '0.75rem', background: '#22c55e20', color: '#22c55e', padding: '0.25rem 0.5rem', borderRadius: '99px' }}>Available</span>
-                                    </label>
-                                ))}
-                            </div>
-                        )}
-                    </div>
-                </Card>
-
-                <Card className="booking-summary">
-                    <h3 className="card-title" style={{ marginBottom: '1.5rem' }}>Book Assessment</h3>
-                    <div className="form-group" style={{ marginBottom: '1.5rem' }}>
-                        <label className="form-label" style={{ display: 'block', marginBottom: '0.5rem', color: '#cbd5e1' }}>Address</label>
-                        <input
-                            className="form-input"
-                            placeholder="Your Address"
-                            value={formData.address}
-                            onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                            style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', background: '#1e293b', border: '1px solid #334155', color: 'white' }}
-                        />
-                    </div>
-                    <div className="form-group" style={{ marginBottom: '1.5rem' }}>
-                        <label className="form-label" style={{ display: 'block', marginBottom: '0.5rem', color: '#cbd5e1' }}>Phone</label>
-                        <input
-                            className="form-input"
-                            placeholder="Your Phone"
-                            value={formData.phone}
-                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                            style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', background: '#1e293b', border: '1px solid #334155', color: 'white' }}
-                        />
-                    </div>
-                    <Button
-                        onClick={handleBook}
-                        className="booking-confirm"
-                        style={{ width: '100%', opacity: loading ? 0.7 : 1 }}
-                        disabled={loading}
-                    >
-                        {loading ? 'Confirming...' : 'Confirm Appointment'}
+                    <h2 className="text-2xl font-bold text-slate-100">Appointment Confirmed!</h2>
+                    <p className="text-slate-300 max-w-md">
+                        We have sent a confirmation to <strong>{formData.phone}</strong>. A solar specialist will visit you at <strong>{formData.address}</strong> on the selected date.
+                    </p>
+                    <Button onClick={() => setBookingStatus(null)} variant="secondary" className="mt-4">
+                        Book Another
                     </Button>
                 </Card>
-            </div>
+            ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <Card className="flex flex-col h-full">
+                        <h3 className="text-xl font-semibold text-slate-100 mb-6">Select Date & Time</h3>
+
+                        {/* Calendar Placeholder - visual bump */}
+                        <div className="bg-slate-800/50 rounded-lg p-8 flex flex-col items-center justify-center border border-white/5 mb-6 min-h-[220px]">
+                            <div className="text-lg font-bold text-slate-200 mb-2">October 2025</div>
+                            <div className="grid grid-cols-7 gap-2 w-full max-w-xs text-center text-xs text-slate-500 mb-2">
+                                <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+                            </div>
+                            <div className="grid grid-cols-7 gap-2 w-full max-w-xs text-center">
+                                {/* Mock days */}
+                                {[...Array(31)].map((_, i) => (
+                                    <div key={i} className={`p-1 rounded-full ${i === 14 ? 'bg-sky-500/20 text-sky-400 font-bold' : 'hover:bg-white/5 cursor-pointer'}`}>
+                                        {i + 1}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="flex-1">
+                            <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-4">Available Assessment Slots</h4>
+                            {loading ? (
+                                <div className="flex justify-center p-4">
+                                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sky-500"></div>
+                                </div>
+                            ) : (
+                                <div className="space-y-3">
+                                    {slots.map(slot => (
+                                        <label key={slot.id} className={`
+                                            relative flex items-center p-4 rounded-lg cursor-pointer transition-all border
+                                            ${selectedSlot === slot.id
+                                                ? 'bg-sky-500/10 border-sky-500/50 shadow-[0_0_15px_rgba(14,165,233,0.15)]'
+                                                : 'bg-slate-800/30 border-transparent hover:bg-slate-800/60'}
+                                        `}>
+                                            <input
+                                                type="radio"
+                                                name="timeSlot"
+                                                value={slot.id}
+                                                checked={selectedSlot === slot.id}
+                                                onChange={() => setSelectedSlot(slot.id)}
+                                                className="sr-only"
+                                            />
+                                            <div className={`w-4 h-4 rounded-full border mr-4 flex items-center justify-center
+                                                ${selectedSlot === slot.id ? 'border-sky-500' : 'border-slate-500'}
+                                            `}>
+                                                {selectedSlot === slot.id && <div className="w-2 h-2 rounded-full bg-sky-500"></div>}
+                                            </div>
+                                            <div className="flex-1">
+                                                <span className="text-slate-200 font-medium">{slot.dateTime}</span>
+                                            </div>
+                                            <span className="text-xs font-semibold bg-emerald-500/10 text-emerald-400 px-2 py-1 rounded-full">
+                                                Available
+                                            </span>
+                                        </label>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </Card>
+
+                    <Card className="flex flex-col h-full">
+                        <h3 className="text-xl font-semibold text-slate-100 mb-6">Book Assessment</h3>
+                        <div className="space-y-6 flex-1">
+                            <div className="space-y-2">
+                                <label className="block text-sm font-medium text-slate-400">Property Address</label>
+                                <input
+                                    className="w-full bg-slate-800/50 border border-slate-700 text-slate-200 rounded-lg p-3 focus:ring-2 focus:ring-sky-500 transition-all"
+                                    placeholder="123 Solar Street, Green City"
+                                    value={formData.address}
+                                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="block text-sm font-medium text-slate-400">Phone Number</label>
+                                <input
+                                    className="w-full bg-slate-800/50 border border-slate-700 text-slate-200 rounded-lg p-3 focus:ring-2 focus:ring-sky-500 transition-all"
+                                    placeholder="+1 (555) 000-0000"
+                                    value={formData.phone}
+                                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                                />
+                            </div>
+
+                            <div className="p-4 bg-slate-800/30 rounded-lg border border-white/5 mt-auto">
+                                <h5 className="text-sm font-semibold text-slate-300 mb-2">What to expect?</h5>
+                                <ul className="text-sm text-slate-400 space-y-2 list-disc pl-4">
+                                    <li>30-minute on-site assessment</li>
+                                    <li>Roof structural integrity check</li>
+                                    <li>Shading analysis</li>
+                                    <li>Personalized savings report</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div className="mt-8 pt-6 border-t border-white/5">
+                            <Button
+                                onClick={handleBook}
+                                className="w-full py-3 text-lg shadow-lg shadow-sky-900/20"
+                                disabled={loading}
+                                variant="primary"
+                            >
+                                {loading ? 'Confirming...' : 'Confirm Appointment'}
+                            </Button>
+                        </div>
+                    </Card>
+                </div>
+            )}
         </div>
     );
 };

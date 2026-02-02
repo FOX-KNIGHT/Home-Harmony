@@ -26,25 +26,25 @@ export default function Shopping() {
           onChange={e => setItem(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Add item..."
-          className="flex-1 bg-[#0f172a] border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-purple-500"
+          className="flex-1 bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-2 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all"
         />
         <button
           onClick={add}
-          className="bg-purple-600 hover:bg-purple-700 text-white p-2 rounded-lg transition-colors"
+          className="bg-sky-600 hover:bg-sky-500 text-white p-2 rounded-lg transition-colors shadow-lg shadow-sky-900/20"
         >
-          <Icons.Plus />
+          <Icons.Plus className="w-5 h-5" />
         </button>
       </div>
-      <ul className="space-y-2 overflow-y-auto max-h-[300px] pr-2">
-        {shopping.length === 0 && <p className="text-slate-500 text-center italic mt-4">List is empty</p>}
+      <ul className="space-y-2 overflow-y-auto max-h-[300px] pr-2 custom-scrollbar">
+        {shopping.length === 0 && <p className="text-slate-500 text-center italic mt-4 py-8 border border-dashed border-slate-800 rounded-lg">List is empty</p>}
         {shopping.map(i => (
-          <li key={i.id} className="flex justify-between items-center bg-[#0f172a] p-3 rounded-lg border border-slate-800 animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <li key={i.id} className="flex justify-between items-center bg-slate-800/30 hover:bg-slate-800/50 p-3 rounded-lg border border-white/5 transition-colors group">
             <span className="text-slate-200">{i.name}</span>
             <button
-              className="text-slate-500 hover:text-red-400 p-1"
+              className="text-slate-500 hover:text-rose-400 p-1 opacity-0 group-hover:opacity-100 transition-all"
               onClick={() => remove(i.id)}
             >
-              <Icons.Close />
+              <Icons.Close className="w-4 h-4" />
             </button>
           </li>
         ))}

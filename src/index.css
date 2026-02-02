@@ -3,18 +3,37 @@
 @tailwind utilities;
 
 :root {
-  --primary-color: #646cff;
-  --secondary-color: #535bf2;
-  --accent-color: #747bff;
-  --background-color: #242424;
-  --surface-color: #1a1a1a;
-  
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* Neon Deep Palette */
+  --primary-color: #0ea5e9;
+  /* Sky 500 */
+  --secondary-color: #8b5cf6;
+  /* Violet 500 */
+  --accent-color: #f43f5e;
+  /* Rose 500 */
+
+  --background-color: #0f172a;
+  /* Slate 900 */
+  --surface-color: #1e293b;
+  /* Slate 800 */
+  --card-bg: rgba(30, 41, 59, 0.7);
+  /* Low opacity slate for glass */
+
+  --text-primary: #f8fafc;
+  /* Slate 50 */
+  --text-secondary: #cbd5e1;
+  /* Slate 300 */
+  --text-muted: #64748b;
+  /* Slate 500 */
+
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-highlight: rgba(255, 255, 255, 0.05);
+
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  color-scheme: dark;
+  color: var(--text-primary);
   background-color: var(--background-color);
 
   font-synthesis: none;
@@ -29,13 +48,52 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background: var(--background-color);
+  background-image:
+    radial-gradient(circle at 15% 50%, rgba(14, 165, 233, 0.15), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.15), transparent 25%);
+  background-attachment: fixed;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--text-primary);
+  font-weight: 600;
+  line-height: 1.2;
 }
 
 h1 {
   font-size: 3.2em;
-  line-height: 1.1;
 }
 
+/* Glassmorphism Utilities */
+.glass-panel {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.glass-card {
+  @apply rounded-xl p-6 transition-all duration-300;
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
+  backdrop-filter: blur(4px);
+}
+
+.glass-card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(14, 165, 233, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Button Upgrades */
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -43,28 +101,49 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  transition: all 0.25s;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-     --background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  border: none;
+  box-shadow: 0 4px 14px 0 rgba(14, 165, 233, 0.39);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.23);
+  transform: scale(1.02);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
 }

@@ -2,14 +2,12 @@ import React, { useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Card, Button } from '../WasteManagement/components/Shared';
 
-const StatBox = ({ value, label, icon, color, className = '' }) => (
-    <Card className={`metric-card metric-card--${color} ${className}`}>
-        <div className="metric-header">
-            <h3 className="metric-title">{label}</h3>
-            <span style={{ fontSize: '1.5rem' }}>{icon}</span>
-        </div>
-        <div className="metric-value">{value}</div>
-    </Card>
+const StatBox = ({ value, label, icon, color }) => (
+    <div className={`p-4 rounded-xl border border-white/5 bg-slate-800/50 flex flex-col items-center text-center hover:bg-slate-800/80 transition-colors`}>
+        <div className="text-2xl mb-2">{icon}</div>
+        <div className="text-2xl font-bold text-slate-100 mb-1">{value}</div>
+        <div className="text-xs text-slate-400 font-medium uppercase tracking-wide">{label}</div>
+    </div>
 );
 
 const Analytics = () => {
@@ -45,64 +43,89 @@ const Analytics = () => {
         ]
         : [{ name: "Potential Savings", value: 50 }, { name: "Current Spending", value: 50 }];
 
-    const COLORS = ["#3b82f6", "#64748b"];
+    const COLORS = ["#0ea5e9", "#475569"]; // Sky 500, Slate 600
 
     return (
-        <div className="page-container">
-            <div className="page-header">
-                <h1 className="page-title">ROI & Savings Calculator</h1>
-                <p className="page-subtitle">Estimate your return on investment and financial impact.</p>
+        <div className="min-h-screen p-6 md:p-8 max-w-7xl mx-auto space-y-8">
+            <div className="space-y-2">
+                <h1 className="text-4xl font-bold bg-gradient-to-r from-sky-400 to-violet-400 bg-clip-text text-transparent">ROI & Savings Calculator</h1>
+                <p className="text-slate-400 text-lg">Estimate your return on investment and financial impact.</p>
             </div>
 
-            <div className="analytics-layout">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Calculator Input Panel */}
-                <Card className="analytics-main">
-                    <h2 className="card-title">Input Details</h2>
+                <Card className="lg:col-span-2 space-y-6">
+                    <h2 className="text-xl font-semibold text-slate-100">Input Details</h2>
 
-                    <div className="input-group">
-                        <label>Avg. Monthly Electric Bill ($)</label>
-                        <input type="number" name="avgBill" value={inputs.avgBill} onChange={handleInputChange} min="50" max="1000" step="10" className="form-input" />
-                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="space-y-2">
+                            <label className="block text-sm font-medium text-slate-400">Avg. Monthly Bill ($)</label>
+                            <input
+                                type="number"
+                                name="avgBill"
+                                value={inputs.avgBill}
+                                onChange={handleInputChange}
+                                min="50" max="1000" step="10"
+                                className="w-full bg-slate-800/50 border border-slate-700 text-slate-200 rounded-lg p-3 focus:ring-2 focus:ring-sky-500 transition-all font-mono"
+                            />
+                        </div>
 
-                    <div className="input-group">
-                        <label>Estimated System Cost ($)</label>
-                        <input type="number" name="solarCost" value={inputs.solarCost} onChange={handleInputChange} min="10000" max="50000" step="1000" className="form-input" />
-                    </div>
+                        <div className="space-y-2">
+                            <label className="block text-sm font-medium text-slate-400">System Cost ($)</label>
+                            <input
+                                type="number"
+                                name="solarCost"
+                                value={inputs.solarCost}
+                                onChange={handleInputChange}
+                                min="10000" max="50000" step="1000"
+                                className="w-full bg-slate-800/50 border border-slate-700 text-slate-200 rounded-lg p-3 focus:ring-2 focus:ring-sky-500 transition-all font-mono"
+                            />
+                        </div>
 
-                    <div className="input-group">
-                        <label>System Size (kW)</label>
-                        <input type="number" name="systemSize" value={inputs.systemSize} onChange={handleInputChange} min="3" max="15" step="0.5" className="form-input" />
+                        <div className="space-y-2">
+                            <label className="block text-sm font-medium text-slate-400">System Size (kW)</label>
+                            <input
+                                type="number"
+                                name="systemSize"
+                                value={inputs.systemSize}
+                                onChange={handleInputChange}
+                                min="3" max="15" step="0.5"
+                                className="w-full bg-slate-800/50 border border-slate-700 text-slate-200 rounded-lg p-3 focus:ring-2 focus:ring-sky-500 transition-all font-mono"
+                            />
+                        </div>
                     </div>
 
                     <Button
                         onClick={calculateROI}
-                        className="calculate-btn"
-                        variant="accent"
-                        style={{ marginTop: '1.5rem', width: '100%' }}
+                        variant="primary"
+                        className="w-full py-4 text-lg font-bold shadow-lg shadow-sky-900/20"
                     >
                         Calculate ROI & Impact
                     </Button>
 
                     {results && (
-                        <div className="chart-container" style={{ height: '300px', marginTop: '2rem' }}>
-                            <h3 className='chart-title' style={{ marginBottom: '1rem', textAlign: 'center' }}>Annual Financial Breakdown</h3>
+                        <div className="h-[350px] mt-8 bg-slate-800/30 rounded-xl p-4 border border-white/5">
+                            <h3 className='text-center text-slate-300 font-medium mb-4'>Annual Financial Breakdown</h3>
                             <ResponsiveContainer width="100%" height="100%">
                                 <PieChart>
                                     <Pie
                                         data={chartData}
                                         cx="50%"
                                         cy="50%"
-                                        outerRadius={80}
+                                        innerRadius={60}
+                                        outerRadius={100}
+                                        paddingAngle={5}
                                         dataKey="value"
-                                        labelLine={false}
-                                        label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
                                     >
                                         {chartData.map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="rgba(0,0,0,0.1)" />
                                         ))}
                                     </Pie>
-                                    <Tooltip />
-                                    <Legend />
+                                    <Tooltip
+                                        contentStyle={{ backgroundColor: '#1e293b', borderColor: '#334155', borderRadius: '8px', color: '#f8fafc' }}
+                                        itemStyle={{ color: '#cbd5e1' }}
+                                    />
+                                    <Legend verticalAlign="bottom" height={36} wrapperStyle={{ paddingTop: '20px' }} />
                                 </PieChart>
                             </ResponsiveContainer>
                         </div>
@@ -110,19 +133,19 @@ const Analytics = () => {
                 </Card>
 
                 {/* Results Metrics Sidebar */}
-                <div className="analytics-sidebar">
-                    <h2 className="panel-heading" style={{ marginBottom: '1rem' }}>Key Results</h2>
+                <div className="space-y-4">
+                    <h2 className="text-xl font-semibold text-slate-100 px-1">Key Results</h2>
                     {results ? (
-                        <div className="results-metrics" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                            <StatBox label="Annual Savings" value={`$${results.annualSavings}`} icon={"$"} color="primary" />
+                        <div className="grid grid-cols-1 gap-4">
+                            <StatBox label="Annual Savings" value={`$${results.annualSavings}`} icon={"💰"} color="primary" />
                             <StatBox label="Breakeven Time" value={`${results.breakevenYears} yrs`} icon={"⏳"} color="secondary" />
-                            <StatBox label="Net Gain (10yr)" value={`$${results.tenYearSavings}`} icon={"🏆"} color="accent" />
-                            <StatBox label="CO₂ Offset" value={`${results.co2} kg`} icon={"🌍"} color="info" />
+                            <StatBox label="Net Gain (10yr)" value={`$${results.tenYearSavings}`} icon={"📈"} color="accent" />
+                            <StatBox label="CO₂ Offset" value={`${results.co2} kg`} icon={"🌱"} color="info" />
                         </div>
                     ) : (
-                        <div className="placeholder-content" style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8', border: '1px dashed #475569', borderRadius: '0.5rem' }}>
-                            <div className="placeholder-icon" style={{ fontSize: '2rem', marginBottom: '1rem' }}>👆</div>
-                            <p>Enter inputs and calculate to view results here.</p>
+                        <div className="border-2 border-dashed border-slate-700 rounded-xl p-8 text-center text-slate-500 flex flex-col items-center justify-center h-64">
+                            <div className="text-4xl mb-4 opacity-50">👆</div>
+                            <p>Enter inputs and click "Calculate" to view projected savings.</p>
                         </div>
                     )}
                 </div>

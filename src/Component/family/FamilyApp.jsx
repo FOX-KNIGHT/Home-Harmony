@@ -7,7 +7,7 @@ import Shopping from "./components/Shopping";
 import PeopleResources from "./components/PeopleResources";
 import Conflicts from "./components/Conflicts";
 import CalendarView from "./components/CalendarView";
-import "./style.css";
+// import "./style.css"; // Removed legacy styles
 
 export default function FamilyApp() {
   return (

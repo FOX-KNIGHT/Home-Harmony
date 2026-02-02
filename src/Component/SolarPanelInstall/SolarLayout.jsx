@@ -11,22 +11,22 @@ const SolarLayout = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     return (
-        <div className="app-container">
+        <div className="flex h-screen bg-slate-900 text-slate-100 overflow-hidden">
             {/* Desktop Layout */}
-            <div className="desktop-layout">
+            <div className="hidden md:flex w-full">
                 <Sidebar />
-                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+                <div className="flex-1 flex flex-col overflow-hidden relative">
                     <TopBar title="Solar Energy Manager" />
-                    <main style={{ flex: 1, overflow: 'auto', padding: '2rem' }}>
+                    <main className="flex-1 overflow-auto relative z-0">
                         <Outlet />
                     </main>
                 </div>
             </div>
 
             {/* Mobile Layout */}
-            <div className="mobile-layout">
+            <div className="md:hidden flex flex-col w-full h-full">
                 <MobileHeader onMenuClick={() => setIsSidebarOpen(true)} />
-                <main style={{ flex: 1, overflow: 'auto', paddingBottom: '5rem' }}>
+                <main className="flex-1 overflow-auto pb-20">
                     <Outlet />
                 </main>
                 <BottomNavigation />

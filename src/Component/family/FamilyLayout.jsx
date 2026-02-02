@@ -5,30 +5,30 @@ import Sidebar from './Sidebar';
 import MobileHeader from '../WasteManagement/MobileHeader';
 import BottomNavigation from '../WasteManagement/BottomNavigation';
 import TopBar from '../WasteManagement/TopBar';
-import '../wastemanage.css'; // Global styles
-import './style.css'; // Family styles
+// import './style.css'; // Removed legacy styles
 
 const FamilyLayout = () => {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    // const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar logic to be implemented
+    const setIsSidebarOpen = (val) => console.log('Sidebar toggle', val); // Placeholder
 
     return (
         <ChaosProvider>
-            <div className="app-container">
+            <div className="flex h-screen bg-slate-900 text-slate-100 overflow-hidden">
                 {/* Desktop Layout */}
-                <div className="desktop-layout">
+                <div className="hidden md:flex w-full">
                     <Sidebar />
-                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+                    <div className="flex-1 flex flex-col overflow-hidden relative">
                         <TopBar title="The Family Chaos Manager" />
-                        <main style={{ flex: 1, overflow: 'auto', padding: '2rem' }}>
+                        <main className="flex-1 overflow-auto relative z-0 p-8">
                             <Outlet />
                         </main>
                     </div>
                 </div>
 
                 {/* Mobile Layout */}
-                <div className="mobile-layout">
+                <div className="md:hidden flex flex-col w-full h-full">
                     <MobileHeader onMenuClick={() => setIsSidebarOpen(true)} />
-                    <main style={{ flex: 1, overflow: 'auto', paddingBottom: '5rem' }}>
+                    <main className="flex-1 overflow-auto pb-20 p-4">
                         <Outlet />
                     </main>
                     <BottomNavigation />
